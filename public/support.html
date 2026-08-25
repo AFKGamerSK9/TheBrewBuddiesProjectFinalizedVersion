@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Support — The Brew Buddies</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family:
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          sans-serif;
+      }
+      body {
+        background-color: #faf8f5;
+        color: #2c2623;
+        scroll-behavior: smooth;
+        transform: scale(1.5);
+        transform-origin: top center;
+        width: 66.66%;
+        margin: 0 auto;
+      }
+
+      .navbar {
+        display: flex;
+        align-items: center;
+        padding: 16px 64px;
+        background: #faf8f5;
+        border-bottom: 1px solid #e0dad2;
+      }
+      .logo {
+        font-weight: 700;
+        font-size: 22px;
+        color: #1d7a46;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .logo img,
+      .footer-brand img {
+        height: 30px;
+        width: auto;
+      }
+
+      /* Support Hero - Gap reduced */
+      .support-hero {
+        text-align: center;
+        padding: 16px 20px 10px 20px;
+      }
+      .tag {
+        font-size: 11px;
+        font-weight: 800;
+        color: #1d7a46;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      .title-serif {
+        font-family: Georgia, serif;
+        font-size: 36px;
+        font-weight: 700;
+        color: #2c2623;
+        margin-bottom: 0;
+      }
+
+      /* Topic Cards */
+      .topics-grid {
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 0 20px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .topic-card {
+        background: #eae3d9;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: left;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: border-color 0.2s;
+      }
+      .topic-card:hover {
+        border-color: #1d7a46;
+      }
+      .topic-icon {
+        width: 28px;
+        height: 28px;
+        background: #cde4db;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+        color: #1d7a46;
+        font-size: 12px;
+      }
+      .topic-card h4 {
+        font-size: 13px;
+        margin-bottom: 6px;
+        font-weight: 700;
+      }
+      .topic-card p {
+        font-size: 11px;
+        color: #6e6862;
+        line-height: 1.4;
+      }
+
+      /* Accordion FAQ */
+      .faq-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      .faq-item {
+        background: #eae3d9;
+        border-radius: 10px;
+        margin-bottom: 12px;
+        overflow: hidden;
+      }
+      .faq-header {
+        padding: 16px 20px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .faq-content {
+        padding: 0 20px 16px;
+        font-size: 12px;
+        color: #6e6862;
+        line-height: 1.5;
+        display: none;
+      }
+      .faq-item.active .faq-content {
+        display: block;
+      }
+
+      /* Contact Banner & Staff List Styling */
+      .contact-banner {
+        max-width: 1000px;
+        margin: 40px auto;
+        background: #1d7a46;
+        color: white;
+        border-radius: 12px;
+        padding: 24px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .contact-banner-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .staff-list {
+        display: none;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 16px;
+        border-radius: 8px;
+        margin-top: 8px;
+      }
+      .staff-list.active {
+        display: block;
+      }
+      .staff-item {
+        font-size: 12px;
+        padding: 6px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        display: flex;
+        justify-content: space-between;
+      }
+      .staff-item:last-child {
+        border-bottom: none;
+      }
+      .btn-white {
+        background: #fff;
+        color: #1d7a46;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 13px;
+        border: none;
+        cursor: pointer;
+      }
+
+      /* Feedback Modal Interface */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      .modal-content {
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 450px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      }
+      .modal-content h3 {
+        font-family: Georgia, serif;
+        margin-bottom: 15px;
+        color: #2c2623;
+      }
+      .modal-content label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 6px;
+        color: #6e6862;
+      }
+      .modal-content input,
+      .modal-content textarea {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #d0c8be;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        font-size: 13px;
+        outline: none;
+      }
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+      .btn-secondary {
+        background: #eae3d9;
+        color: #2c2623;
+        padding: 8px 16px;
+        border-radius: 6px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .btn-primary {
+        background: #1d7a46;
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 6px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      /* Footer */
+      footer {
+        background: #1f1916;
+        color: #d0c8be;
+        padding: 48px 64px 24px;
+        margin-top: 60px;
+        font-size: 12px;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+      .footer-brand h3 {
+        color: #fff;
+        font-size: 18px;
+        margin-bottom: 12px;
+      }
+      .footer-brand p {
+        color: #9e958b;
+        line-height: 1.6;
+        max-width: 280px;
+      }
+      .footer-col h4 {
+        color: #fff;
+        font-size: 13px;
+        margin-bottom: 12px;
+      }
+      .footer-col ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .footer-col a {
+        color: #9e958b;
+        text-decoration: none;
+      }
+      .footer-bottom {
+        border-top: 1px solid #332b27;
+        padding-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    </style>
+    <link rel="icon" type="image/png" href="logo.png" />
+  </head>
+  <body>
+    <header class="navbar">
+      <a href="index.html" style="text-decoration: none">
+        <div class="logo">
+          <img src="logo.png" alt="The Brew Buddies Logo" />
+          <span>The Brew Buddies</span>
+        </div>
+      </a>
+    </header>
+
+    <main>
+      <section class="support-hero">
+        <div class="tag">The Brew Buddies Help Center</div>
+        <h1 class="title-serif">How can we help with your brew?</h1>
+      </section>
+
+      <!-- Topics Grid -->
+      <section class="topics-grid">
+        <div
+          class="topic-card interactive-trigger"
+          data-topic="Coffee Grind Guide"
+        >
+          <div class="topic-icon">🔄</div>
+          <h4>Coffee Grind Guide</h4>
+          <p>
+            Select the perfect grind size for French Press, AeroPress, or
+            Espresso.
+          </p>
+        </div>
+        <div
+          class="topic-card interactive-trigger"
+          data-topic="Manage Subscriptions"
+        >
+          <div class="topic-icon">🛍️</div>
+          <h4>Manage Subscriptions</h4>
+          <p>
+            Easily modify frequency, delivery days, or swap roasted coffee bags.
+          </p>
+        </div>
+        <div
+          class="topic-card interactive-trigger"
+          data-topic="Returns & Refund Policy"
+        >
+          <div class="topic-icon">🛡️</div>
+          <h4>Returns & Refund Policy</h4>
+          <p>
+            Unsatisfied with the aroma? Learn about our 100% replacement
+            guarantee.
+          </p>
+        </div>
+      </section>
+
+      <section class="faq-container">
+        <h3 class="title-serif" style="font-size: 22px; margin-bottom: 20px">
+          Frequently Asked Questions
+        </h3>
+
+        <div class="faq-item active">
+          <div
+            class="faq-header"
+            onclick="this.parentElement.classList.toggle('active')"
+          >
+            <span>How long does delivery take inside Kathmandu Valley?</span>
+            <span>▼</span>
+          </div>
+          <div class="faq-content">
+            Standard delivery inside Kathmandu, Lalitpur, and Bhaktapur takes 24
+            to 48 hours immediately after our roasting process is completed.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div
+            class="faq-header"
+            onclick="this.parentElement.classList.toggle('active')"
+          >
+            <span>How should I store my coffee beans to keep them fresh?</span>
+            <span>▼</span>
+          </div>
+          <div class="faq-content">
+            Keep your beans in an airtight, opaque container away from direct
+            sunlight, heat, and moisture. Avoid storing them in the
+            refrigerator, as condensation can ruin the flavor profile.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div
+            class="faq-header"
+            onclick="this.parentElement.classList.toggle('active')"
+          >
+            <span>Are your coffee beans sourced ethically?</span>
+            <span>▼</span>
+          </div>
+          <div class="faq-content">
+            Yes! All our specialty coffee beans are sourced directly from
+            partner farms in Nepal and ethical micro-lots globally, ensuring
+            fair wages and sustainable farming practices.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div
+            class="faq-header"
+            onclick="this.parentElement.classList.toggle('active')"
+          >
+            <span>Can I customize my coffee subscription delivery dates?</span>
+            <span>▼</span>
+          </div>
+          <div class="faq-content">
+            Absolutely. You can easily modify your delivery frequency, pause a
+            shipment, or switch coffee flavor profiles anytime through your
+            account profile or by contacting our team.
+          </div>
+        </div>
+      </section>
+
+      <div class="contact-banner">
+        <div class="contact-banner-top">
+          <div>
+            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 4px">
+              Still need help with your brew?
+            </h3>
+            <p style="font-size: 12px; opacity: 0.9">
+              Get in touch directly with our Kathmandu roasting headquarters.
+            </p>
+          </div>
+          <button class="btn-white" id="contactRoastBtn">
+            Contact Roast Team
+          </button>
+        </div>
+        <!-- Dummy Staff Phone Number List -->
+        <div class="staff-list" id="staffListContainer">
+          <p style="font-weight: 700; margin-bottom: 8px; font-size: 13px">
+            Roast Team Direct Lines:
+          </p>
+          <div class="staff-item">
+            <span>Aarav Shrestha (Head Roaster)</span>
+            <span>+977-9811223344</span>
+          </div>
+          <div class="staff-item">
+            <span>Priya Maharjan (Quality Control)</span>
+            <span>+977-9822334455</span>
+          </div>
+          <div class="staff-item">
+            <span>Bikash Gurung (Customer Support Lead)</span>
+            <span>+977-9833445566</span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Feedback & Query Modal Interface (Triggered by Topic Cards) -->
+    <div class="modal-overlay" id="feedbackModal">
+      <div class="modal-content">
+        <h3 id="modalTitle">Submit Your Query</h3>
+        <form id="feedbackForm">
+          <input type="hidden" id="selectedTopic" />
+          <label for="userName">Your Name</label>
+          <input
+            type="text"
+            id="userName"
+            required
+            placeholder="Enter your full name"
+          />
+
+          <label for="userEmail">Email Address</label>
+          <input
+            type="email"
+            id="userEmail"
+            required
+            placeholder="name@example.com"
+          />
+
+          <label for="userQuery">Your Query / Feedback</label>
+          <textarea
+            id="userQuery"
+            rows="4"
+            required
+            placeholder="Type your details here..."
+          ></textarea>
+
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary" id="closeModal">
+              Cancel
+            </button>
+            <button type="submit" class="btn-primary">Submit Query</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>
+            <img src="logo.png" alt="The Brew Buddies Logo" /> The Brew Buddies
+          </h3>
+          <p>Artisanal coffee and fine loose-leaf teas sourced ethically.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const modal = document.getElementById("feedbackModal");
+      const closeModalBtn = document.getElementById("closeModal");
+      const feedbackForm = document.getElementById("feedbackForm");
+      const modalTitle = document.getElementById("modalTitle");
+      const selectedTopicInput = document.getElementById("selectedTopic");
+      const contactRoastBtn = document.getElementById("contactRoastBtn");
+      const staffListContainer = document.getElementById("staffListContainer");
+
+      // Toggle staff phone number list when Contact Roast Team is clicked
+      contactRoastBtn.addEventListener("click", () => {
+        staffListContainer.classList.toggle("active");
+        contactRoastBtn.textContent = staffListContainer.classList.contains(
+          "active",
+        )
+          ? "Hide Roast Team"
+          : "Contact Roast Team";
+      });
+
+      // Attach click events to topic cards to open the modal query form
+      document.querySelectorAll(".interactive-trigger").forEach((element) => {
+        element.addEventListener("click", (e) => {
+          const topic =
+            element.getAttribute("data-topic") || "General Support Query";
+          selectedTopicInput.value = topic;
+          modalTitle.innerText = `Support: ${topic}`;
+          modal.style.display = "flex";
+        });
+      });
+
+      closeModalBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+      });
+
+      feedbackForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          topic: selectedTopicInput.value,
+          name: document.getElementById("userName").value,
+          email: document.getElementById("userEmail").value,
+          query: document.getElementById("userQuery").value,
+          date: new Date().toISOString(),
+        };
+
+        try {
+          const response = await fetch("/api/support/submit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          if (response.ok) {
+            alert("Your query has been successfully submitted and saved!");
+            feedbackForm.reset();
+            modal.style.display = "none";
+          } else {
+            alert("Failed to submit query. Please try again.");
+          }
+        } catch (err) {
+          console.error("Error submitting query:", err);
+        }
+      });
+    </script>
+  </body>
+</html>

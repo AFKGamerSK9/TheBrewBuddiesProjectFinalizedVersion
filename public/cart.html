@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Shopping Cart — The Brew Buddies</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", system-ui, sans-serif;
+      }
+      html,
+      body {
+        background-color: #faf8f5;
+        color: #2c2623;
+        scroll-behavior: smooth;
+        width: 100%;
+        overflow-x: hidden;
+      }
+      /* Scale wrapper to 150% visually, matching index.html */
+      .page-wrapper {
+        transform: scale(1.5);
+        transform-origin: top center;
+        width: 66.66%;
+        margin: 0 auto;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .announcement-bar {
+        background-color: #111111;
+        color: #ffffff;
+        text-align: center;
+        padding: 8px;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+      }
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 48px;
+        background-color: #faf8f5;
+        border-bottom: 1px solid #eae5dc;
+      }
+      .logo {
+        font-weight: 700;
+        font-size: 20px;
+        color: #1d7a46;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .logo img,
+      .footer-brand img {
+        height: 30px;
+        width: auto;
+      }
+      .footer-brand h3 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .nav-right {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+      .nav-link {
+        text-decoration: none;
+        color: #2c2623;
+        font-size: 14px;
+      }
+      .user-badge-link {
+        text-decoration: none;
+        background-color: #1d7a46;
+        color: white;
+        padding: 6px 14px;
+        border-radius: 16px;
+        font-size: 13px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .cart-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 24px;
+        flex: 1;
+        width: 100%;
+      }
+      .cart-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+      }
+      .cart-grid {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 32px;
+      }
+      .free-shipping-banner {
+        background-color: #f7f9f6;
+        padding: 16px;
+        border-radius: 8px;
+        border: 1px solid #eae7e1;
+        margin-bottom: 20px;
+      }
+      .progress-bar-bg {
+        height: 6px;
+        background-color: #e2e8e3;
+        border-radius: 3px;
+        margin: 8px 0;
+      }
+      .progress-bar-fill {
+        height: 100%;
+        background-color: #1d7a46;
+        width: 0%;
+        border-radius: 3px;
+        transition: width 0.3s ease;
+      }
+      .cart-item {
+        border: 1px solid #eee9e0;
+        border-radius: 10px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background-color: #ffffff;
+        margin-bottom: 12px;
+        position: relative;
+      }
+      .item-img {
+        width: 72px;
+        height: 72px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+      .item-details h4 {
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .item-details p {
+        font-size: 12px;
+        color: #8c857b;
+        margin-bottom: 8px;
+      }
+      .qty-control {
+        display: inline-flex;
+        align-items: center;
+        background: #f5f2eb;
+        border-radius: 4px;
+        padding: 4px 8px;
+        gap: 12px;
+      }
+      .qty-control button {
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 14px;
+      }
+      .item-price {
+        font-size: 14px;
+        font-weight: 700;
+        margin-left: auto;
+      }
+      .remove-btn {
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 16px;
+        color: #9e9890;
+        margin-left: 12px;
+      }
+      .remove-btn:hover {
+        color: #d9534f;
+      }
+      .order-summary {
+        background-color: #ffffff;
+        border: 1px solid #eee9e0;
+        border-radius: 12px;
+        padding: 24px;
+        height: fit-content;
+      }
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        margin-bottom: 12px;
+      }
+      .total-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 18px;
+        font-weight: 700;
+        padding-top: 12px;
+        border-top: 1px solid #eee9e0;
+        margin-top: 12px;
+      }
+      .btn-checkout {
+        width: 100%;
+        background-color: #1d7a46;
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 8px;
+        font-weight: 700;
+        margin-top: 20px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      .btn-checkout.zero-cost {
+        background-color: #0d3820;
+      }
+      .empty-cart {
+        text-align: center;
+        padding: 40px;
+        background: #ffffff;
+        border: 1px solid #eee9e0;
+        border-radius: 10px;
+        color: #8c857b;
+      }
+
+      /* Footer Styling matching index.html */
+      footer {
+        background-color: #231b17;
+        color: #d3cdc6;
+        padding: 48px;
+        margin-top: auto;
+        width: 100%;
+      }
+      .footer-top {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 32px;
+      }
+      .footer-brand h3 {
+        color: white;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .footer-brand img {
+        height: 30px;
+        width: auto;
+      }
+      .footer-brand p {
+        max-width: 320px;
+        font-size: 13px;
+        line-height: 1.5;
+        color: #9c9286;
+      }
+      .footer-links {
+        display: flex;
+        gap: 48px;
+      }
+      .footer-links h5 {
+        color: white;
+        margin-bottom: 12px;
+      }
+      .footer-links a {
+        display: block;
+        font-size: 13px;
+        margin-bottom: 8px;
+        color: #d3cdc6;
+        text-decoration: none;
+      }
+      .footer-links a:hover {
+        color: white;
+      }
+      .footer-bottom {
+        border-top: 1px solid #382f2a;
+        padding-top: 24px;
+        font-size: 12px;
+        color: #8c8378;
+      }
+    </style>
+    <link rel="icon" type="image/png" href="logo.png" />
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <div class="announcement-bar">
+        Flash Offers — Free shipping on orders over NRs. 2,500
+      </div>
+
+      <header class="navbar">
+        <a href="index.html" style="text-decoration: none">
+          <div class="logo">
+            <img src="logo.png" alt="The Brew Buddies Logo" />
+            <span>The Brew Buddies</span>
+          </div>
+        </a>
+        <div class="nav-right" id="navRightContainer"></div>
+      </header>
+
+      <main class="cart-container">
+        <div class="cart-header">
+          <h1>Your Cart</h1>
+          <a
+            href="index.html"
+            style="color: #1d7a46; text-decoration: none; font-size: 14px"
+            >← Continue Shopping</a
+          >
+        </div>
+
+        <div class="cart-grid">
+          <section class="cart-items-section">
+            <div class="free-shipping-banner">
+              <div id="shippingMessage" style="font-size: 12px; color: #4a4540">
+                🚚 Calculating free shipping progress...
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="shippingProgressBar"></div>
+              </div>
+            </div>
+
+            <div id="cartItemsContainer"></div>
+          </section>
+
+          <aside class="order-summary">
+            <h3>Order Summary</h3>
+            <br />
+            <div class="summary-row">
+              <span>Subtotal</span><span id="summarySubtotal">NRs. 0</span>
+            </div>
+            <div class="summary-row" style="color: #1d7a46; font-weight: 600">
+              <span>Shipping</span><span id="summaryShipping">NRs. 300</span>
+            </div>
+            <div class="total-row">
+              <span>Total</span
+              ><span id="summaryTotal" style="color: #1d7a46">NRs. 0</span>
+            </div>
+            <button
+              id="checkoutBtn"
+              class="btn-checkout"
+              onclick="handleCheckout()"
+            >
+              Browse our store.
+            </button>
+          </aside>
+        </div>
+      </main>
+
+      <!-- FOOTER SECTION matching index.html -->
+      <footer>
+        <div class="footer-top">
+          <div class="footer-brand">
+            <h3>
+              <img src="logo.png" alt="The Brew Buddies Logo" /> The Brew
+              Buddies
+            </h3>
+            <p>
+              Artisanal coffee and fine loose-leaf teas sourced ethically from
+              family-owned estates around the globe. Freshly roasted, perfectly
+              dried, delivered directly to your cup.
+            </p>
+          </div>
+          <div class="footer-links">
+            <div>
+              <h5>Shop Collections</h5>
+              <a href="#">Single Origin Coffee</a>
+              <a href="#">Artisanal Blends</a>
+              <a href="#">Organic Loose Tea</a>
+              <a href="#">Espresso Gear</a>
+            </div>
+            <div>
+              <h5>Our Heritage</h5>
+              <a href="#">The Roastery Story</a>
+              <a href="#">Sustainable Sourcing</a>
+              <a href="#">Brew Guides</a>
+            </div>
+            <div>
+              <h5>Support</h5>
+              <a href="#">Shipping & Delivery</a>
+              <a href="#">Returns & Refund Policy</a>
+              <a href="#">Contact Roasting Team</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>
+            © 2026 The Brew Buddies Co. Sourced with integrity, packaged
+            beautifully.
+          </p>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      let currentCartTotal = 0;
+
+      function parseCSV(text) {
+        const lines = text.trim().split("\n");
+        if (lines.length === 0) return [];
+
+        let result = [];
+        for (let i = 1; i < lines.length; i++) {
+          if (!lines[i].trim()) continue;
+
+          const currentline = lines[i]
+            .split(",")
+            .map((val) => val.trim().replace(/^["']|["']$/g, ""));
+
+          let obj = {
+            account_id: currentline[0] || "",
+            email: currentline[1] || "",
+            product_id: currentline[2] || "",
+            product_name: currentline[3] || "",
+            quantity: currentline[4] || "1",
+            price: currentline[5] || "0",
+            added_from: currentline[6] || "",
+            timestamp: currentline[7] || "",
+          };
+
+          if (obj.email && obj.email.includes("@")) {
+            result.push(obj);
+          }
+        }
+        return result;
+      }
+
+      async function fetchAndRenderCart() {
+        renderAuthNavbar();
+        try {
+          const response = await fetch(
+            "../data/cart.csv?t=" + new Date().getTime(),
+          );
+          if (!response.ok) throw new Error("Could not load cart.csv");
+          const csvText = await response.text();
+          const cartData = parseCSV(csvText);
+          renderCartUI(cartData);
+        } catch (err) {
+          console.warn("CSV load fallback triggered:", err);
+          renderCartUI([]);
+        }
+      }
+
+      function renderAuthNavbar() {
+        const navRight = document.getElementById("navRightContainer");
+        if (!navRight) return;
+        const activeEmail = localStorage.getItem("brewBuddyActiveUser");
+        let currentUser = null;
+        if (activeEmail) {
+          currentUser = JSON.parse(
+            localStorage.getItem("brewBuddyActiveUserProfile"),
+          ) || { name: activeEmail.split("@")[0], isLoggedIn: true };
+        }
+
+        if (activeEmail && currentUser) {
+          const firstName = currentUser.name
+            ? currentUser.name.split(" ")[0]
+            : activeEmail.split("@")[0];
+          navRight.innerHTML = `
+            <button onclick="window.location.href='account.html'" class="nav-link" style="display: flex; align-items: center; gap: 8px; background: #1d7a46; color: white; padding: 6px 14px; border-radius: 20px; font-weight: 600; border: none; cursor: pointer;">
+              <span style="font-size: 11px; background: rgba(255,255,255,0.2); width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">👤</span>
+              <span>${firstName}</span>
+            </button>
+          `;
+        } else {
+          navRight.innerHTML = `
+            <a href="account.html" class="nav-link" style="font-weight: 600; color: #1d7a46; text-decoration: none; padding: 6px 16px; border: 1.5px solid #1d7a46; border-radius: 20px;">Sign In</a>
+          `;
+        }
+      }
+
+      async function modifyQtyOnServer(email, productId, delta) {
+        try {
+          const response = await fetch("/api/cart/update", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: email,
+              product_id: productId,
+              delta: delta,
+            }),
+          });
+          if (response.ok) {
+            fetchAndRenderCart();
+          } else {
+            alert("Failed to update cart on server.");
+          }
+        } catch (err) {
+          console.error("Error updating quantity:", err);
+        }
+      }
+
+      async function removeItemFromServer(email, productId) {
+        try {
+          const response = await fetch("/api/cart/remove", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email, product_id: productId }),
+          });
+          if (response.ok) {
+            fetchAndRenderCart();
+          } else {
+            alert("Failed to remove item from server.");
+          }
+        } catch (err) {
+          console.error("Error removing item:", err);
+        }
+      }
+
+      function renderCartUI(cartData) {
+        const activeEmail = localStorage.getItem("brewBuddyActiveUser");
+        const container = document.getElementById("cartItemsContainer");
+
+        if (!activeEmail) {
+          container.innerHTML = `
+            <div class="empty-cart">
+              <h3>Please sign in to view your cart. </h3>
+              <p style="margin-top: 10px;"><a href="account.html" style="color: #1d7a46; font-weight: 600;">Sign In here</a></p>
+            </div>
+          `;
+          updateSummary(0);
+          return;
+        }
+
+        const userItems = cartData.filter(
+          (item) =>
+            item.email &&
+            item.email.toLowerCase() === activeEmail.toLowerCase(),
+        );
+
+        if (userItems.length === 0) {
+          container.innerHTML = `
+            <div class="empty-cart">
+              <h3>Your cart is empty </h3>
+              <p style="margin-top: 8px;">Explore our collection and add your favorite brews!</p>
+            </div>
+          `;
+          updateSummary(0);
+          return;
+        }
+
+        let html = "";
+        let subtotal = 0;
+
+        userItems.forEach((item) => {
+          const itemPrice = Number(item.price) || 0;
+          const itemQty = Number(item.quantity) || 1;
+          const itemTotal = itemPrice * itemQty;
+          subtotal += itemTotal;
+
+          html += `
+            <div class="cart-item">
+              <img src="https://images.unsplash.com/photo-1587734195503-904fca47e0e9?auto=format&fit=crop&w=150&q=80" class="item-img" alt="${item.product_name}" />
+              <div class="item-details">
+                <h4>${item.product_name}</h4>
+                <p>Standard Pack</p>
+                <div class="qty-control">
+                  <button onclick="modifyQtyOnServer('${item.email}', '${item.product_id}', -1)">-</button>
+                  <span>${item.quantity}</span>
+                  <button onclick="modifyQtyOnServer('${item.email}', '${item.product_id}', 1)">+</button>
+                </div>
+              </div>
+              <div class="item-price">NRs. ${itemTotal.toLocaleString()}</div>
+              <button class="remove-btn" onclick="removeItemFromServer('${item.email}', '${item.product_id}')">🗑</button>
+            </div>
+          `;
+        });
+
+        container.innerHTML = html;
+        updateSummary(subtotal);
+      }
+
+      function updateSummary(subtotal) {
+        currentCartTotal = subtotal;
+
+        const freeShippingThreshold = 2500;
+        const shippingFee =
+          subtotal >= freeShippingThreshold || subtotal === 0 ? 0 : 300;
+        const grandTotal = subtotal + (subtotal === 0 ? 0 : shippingFee);
+
+        document.getElementById("summarySubtotal").innerText =
+          `NRs. ${subtotal.toLocaleString()}`;
+
+        const shippingElement = document.getElementById("summaryShipping");
+        if (subtotal === 0) {
+          shippingElement.innerText = "NRs. 0";
+        } else if (subtotal >= freeShippingThreshold) {
+          shippingElement.innerText = "FREE";
+        } else {
+          shippingElement.innerText = `NRs. ${shippingFee.toLocaleString()}`;
+        }
+
+        document.getElementById("summaryTotal").innerText =
+          `NRs. ${grandTotal.toLocaleString()}`;
+
+        const checkoutBtn = document.getElementById("checkoutBtn");
+        if (subtotal === 0) {
+          checkoutBtn.classList.add("zero-cost");
+          checkoutBtn.innerText = "Browse our store.";
+        } else {
+          checkoutBtn.classList.remove("zero-cost");
+          checkoutBtn.innerText = "💳 Proceed to Checkout";
+        }
+
+        const diff = freeShippingThreshold - subtotal;
+        const shippingMsg = document.getElementById("shippingMessage");
+        const progressBar = document.getElementById("shippingProgressBar");
+
+        if (subtotal >= freeShippingThreshold) {
+          shippingMsg.innerHTML = `🎉 Congratulations! You qualify for <strong>FREE</strong> Delivery.`;
+          progressBar.style.width = "100%";
+        } else {
+          shippingMsg.innerHTML = `🚚 Add <strong>NRs. ${diff.toLocaleString()}</strong> more for <strong>FREE</strong> Delivery! `;
+          const percentage = Math.min(
+            100,
+            (subtotal / freeShippingThreshold) * 100,
+          );
+          progressBar.style.width = `${percentage}%`;
+        }
+      }
+
+      function handleCheckout() {
+        const activeEmail = localStorage.getItem("brewBuddyActiveUser");
+        if (!activeEmail) {
+          alert("Please sign in to proceed to checkout.");
+          window.location.href = "account.html";
+          return;
+        }
+
+        if (currentCartTotal === 0) {
+          window.location.href = "index.html";
+          return;
+        }
+
+        window.location.href = "checkout.html";
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        fetchAndRenderCart();
+      });
+    </script>
+  </body>
+</html>

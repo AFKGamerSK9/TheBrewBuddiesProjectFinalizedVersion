@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout — The Brew Buddies</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family:
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          sans-serif;
+      }
+
+      html,
+      body {
+        background-color: #faf8f5;
+        color: #2c2623;
+        scroll-behavior: smooth;
+        width: 100%;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      .page-wrapper {
+        transform: scale(1.5);
+        transform-origin: top center;
+        width: 66.66%;
+        margin: 0 auto;
+        padding-bottom: 64px;
+      }
+
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 48px;
+        background-color: #faf8f5;
+        border-bottom: 1px solid #eae5dc;
+      }
+
+      .logo {
+        font-weight: 700;
+        font-size: 20px;
+        color: #2c2623;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+      }
+
+      .logo img {
+        height: 30px;
+        width: auto;
+      }
+
+      .checkout-container {
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 32px;
+        padding: 40px 48px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .checkout-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 28px;
+        border: 1px solid #e2ddd5;
+        margin-bottom: 24px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .step-number {
+        background-color: #1d7a46;
+        color: #ffffff;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #2c2623;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 16px;
+      }
+
+      .form-group.full-width {
+        grid-column: span 2;
+      }
+
+      .form-group label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #2c2623;
+      }
+
+      .form-input,
+      .form-textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #e2ddd5;
+        border-radius: 8px;
+        font-size: 13px;
+        background-color: #ffffff;
+        color: #2c2623;
+        outline: none;
+        transition: border-color 0.2s ease;
+      }
+
+      .form-input:focus,
+      .form-textarea:focus {
+        border-color: #1d7a46;
+      }
+
+      .form-input::placeholder,
+      .form-textarea::placeholder {
+        color: #b0a99f;
+      }
+
+      .form-textarea {
+        height: 80px;
+        resize: none;
+      }
+
+      .payment-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .payment-option {
+        border: 1px solid #e2ddd5;
+        border-radius: 10px;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: #ffffff;
+      }
+
+      .payment-option:hover {
+        border-color: #1d7a46;
+      }
+
+      .payment-option.active {
+        border: 2px solid #1d7a46;
+        background-color: #f6fbf8;
+      }
+
+      .payment-option input[type="radio"] {
+        accent-color: #1d7a46;
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+      }
+
+      .payment-option label {
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        color: #2c2623;
+        flex: 1;
+      }
+
+      .summary-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 24px;
+        border: 1px solid #e2ddd5;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        position: sticky;
+        top: 24px;
+      }
+
+      .summary-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: #2c2623;
+      }
+
+      .summary-items {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 20px;
+        max-height: 280px;
+        overflow-y: auto;
+        padding-right: 4px;
+      }
+
+      .summary-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .summary-item img {
+        width: 52px;
+        height: 52px;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+
+      .item-details {
+        flex: 1;
+      }
+
+      .item-details h4 {
+        font-size: 13px;
+        font-weight: 600;
+        color: #2c2623;
+        margin-bottom: 2px;
+      }
+
+      .item-details p {
+        font-size: 11px;
+        color: #6e6862;
+      }
+
+      .item-price {
+        font-size: 13px;
+        font-weight: 700;
+        color: #2c2623;
+      }
+
+      .divider {
+        border: none;
+        border-top: 1px dashed #e2ddd5;
+        margin: 16px 0;
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        color: #6e6862;
+        margin-bottom: 10px;
+      }
+
+      .summary-row.total {
+        font-size: 18px;
+        font-weight: 700;
+        color: #2c2623;
+        margin-top: 12px;
+        margin-bottom: 20px;
+      }
+
+      .free-text {
+        color: #1d7a46;
+        font-weight: 700;
+      }
+
+      .btn-place-order {
+        width: 100%;
+        background-color: #1d7a46;
+        color: #ffffff;
+        border: none;
+        padding: 14px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: background-color 0.2s ease;
+      }
+
+      .btn-place-order:hover {
+        background-color: #155c34;
+      }
+
+      .trust-badges {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        margin-top: 16px;
+        font-size: 10px;
+        color: #6e6862;
+        font-weight: 600;
+      }
+
+      .trust-item {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+    </style>
+    <link rel="icon" type="image/png" href="logo.png" />
+  </head>
+
+  <body>
+    <div class="page-wrapper">
+      <header class="navbar">
+        <a href="index.html" class="logo">
+          <img src="logo.png" alt="The Brew Buddies Logo" />
+          <span>The Brew Buddies</span>
+        </a>
+      </header>
+
+      <main class="checkout-container">
+        <div class="checkout-main">
+          <form id="checkoutForm" onsubmit="handlePlaceOrder(event)">
+            <div class="checkout-card">
+              <div class="section-header">
+                <span class="step-number">1</span>
+                <h2 class="section-title">Delivery Details</h2>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="fullName">Full Name</label>
+                  <input
+                    type="text"
+                    id="fullName"
+                    class="form-input"
+                    placeholder="e.g. Aayush Shrestha"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="phoneNumber">Phone Number</label>
+                  <input
+                    type="tel"
+                    id="phoneNumber"
+                    class="form-input"
+                    placeholder="e.g. 98XXXXXXXX"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="streetAddress">Street Address</label>
+                  <input
+                    type="text"
+                    id="streetAddress"
+                    class="form-input"
+                    placeholder="e.g. Jhamsikhel, Lane 4"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="city">City</label>
+                  <input
+                    type="text"
+                    id="city"
+                    class="form-input"
+                    value="Kathmandu"
+                    required
+                  />
+                </div>
+
+                <div class="form-group full-width">
+                  <label for="deliveryNotes">Delivery Notes (Optional)</label>
+                  <textarea
+                    id="deliveryNotes"
+                    class="form-textarea"
+                    placeholder="Any special instructions for the rider..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="checkout-card">
+              <div class="section-header">
+                <span class="step-number">2</span>
+                <h2 class="section-title">Payment Method</h2>
+              </div>
+
+              <div class="payment-grid">
+                <div
+                  class="payment-option"
+                  onclick="selectPayment('esewa', this)"
+                >
+                  <input
+                    type="radio"
+                    id="payEsewa"
+                    name="paymentMethod"
+                    value="eSewa"
+                  />
+                  <label for="payEsewa">eSewa</label>
+                </div>
+
+                <div
+                  class="payment-option"
+                  onclick="selectPayment('khalti', this)"
+                >
+                  <input
+                    type="radio"
+                    id="payKhalti"
+                    name="paymentMethod"
+                    value="Khalti"
+                  />
+                  <label for="payKhalti">Khalti</label>
+                </div>
+
+                <div
+                  class="payment-option"
+                  onclick="selectPayment('fonepay', this)"
+                >
+                  <input
+                    type="radio"
+                    id="payFonepay"
+                    name="paymentMethod"
+                    value="Fonepay QR"
+                  />
+                  <label for="payFonepay">Fonepay QR</label>
+                </div>
+
+                <div
+                  class="payment-option active"
+                  onclick="selectPayment('cod', this)"
+                >
+                  <input
+                    type="radio"
+                    id="payCod"
+                    name="paymentMethod"
+                    value="Cash on Delivery (COD)"
+                    checked
+                  />
+                  <label for="payCod">Cash on Delivery (COD)</label>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <aside class="checkout-sidebar">
+          <div class="summary-card">
+            <h3 class="summary-title">Order Summary</h3>
+
+            <div class="summary-items" id="summaryItemsList"></div>
+
+            <hr class="divider" />
+
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span id="subtotalLabel">NRs. 0</span>
+            </div>
+            <div class="summary-row">
+              <span>Shipping</span>
+              <span class="free-text">FREE</span>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="summary-row total">
+              <span>Total</span>
+              <span id="totalLabel">NRs. 0</span>
+            </div>
+
+            <button
+              type="button"
+              class="btn-place-order"
+              onclick="triggerOrderSubmit()"
+            >
+              🔒 Place Order — <span id="btnTotalLabel">NRs. 0</span>
+            </button>
+
+            <div class="trust-badges">
+              <div class="trust-item">🛡️ 256-bit Encryption</div>
+              <div class="trust-item">🔥 Fresh Roast Guarantee</div>
+            </div>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <script>
+      function parseCSV(text) {
+        const lines = text.trim().split("\n");
+        if (lines.length === 0) return [];
+
+        let result = [];
+        for (let i = 1; i < lines.length; i++) {
+          if (!lines[i].trim()) continue;
+
+          const currentline = lines[i]
+            .split(",")
+            .map((val) => val.trim().replace(/^["']|["']$/g, ""));
+
+          let obj = {
+            account_id: currentline[0] || "",
+            email: currentline[1] || "",
+            product_id: currentline[2] || "",
+            product_name: currentline[3] || "",
+            quantity: Number(currentline[4]) || 1,
+            price: Number(currentline[5]) || 0,
+            added_from: currentline[6] || "",
+            timestamp: currentline[7] || "",
+          };
+
+          if (obj.email && obj.email.includes("@")) {
+            result.push(obj);
+          }
+        }
+        return result;
+      }
+
+      function selectPayment(type, element) {
+        document.querySelectorAll(".payment-option").forEach((opt) => {
+          opt.classList.remove("active");
+        });
+        element.classList.add("active");
+        const radio = element.querySelector('input[type="radio"]');
+        if (radio) radio.checked = true;
+      }
+
+      async function loadCheckoutSummary() {
+        const activeEmail = localStorage.getItem("brewBuddyActiveUser") || "";
+
+        if (!activeEmail) {
+          alert(
+            "Please sign in or add items to your cart before checking out.",
+          );
+          window.location.href = "cart.html";
+          return;
+        }
+
+        let cartItems = [];
+
+        try {
+          const response = await fetch(
+            "/data/cart.csv?t=" + new Date().getTime(),
+          );
+          if (response.ok) {
+            const csvText = await response.text();
+            const allItems = parseCSV(csvText);
+            cartItems = allItems.filter(
+              (item) => item.email.toLowerCase() === activeEmail.toLowerCase(),
+            );
+          }
+        } catch (e) {
+          console.error("Error fetching cart.csv", e);
+        }
+
+        if (cartItems.length === 0) {
+          alert("Your cart is empty. Redirecting to cart page...");
+          window.location.href = "cart.html";
+          return;
+        }
+
+        const itemsContainer = document.getElementById("summaryItemsList");
+        let grandTotal = 0;
+
+        itemsContainer.innerHTML = cartItems
+          .map((item) => {
+            const itemTotal = item.price * item.quantity;
+            grandTotal += itemTotal;
+            return `
+            <div class="summary-item">
+              <img src="https://images.unsplash.com/photo-1587734195503-904fca47e0e9?auto=format&fit=crop&w=200&q=80" alt="${item.product_name}">
+              <div class="item-details">
+                <h4>${item.product_name}</h4>
+                <p>Quantity: ${item.quantity}</p>
+              </div>
+              <div class="item-price">NRs. ${itemTotal.toLocaleString()}</div>
+            </div>
+          `;
+          })
+          .join("");
+
+        const formattedTotal = `NRs. ${grandTotal.toLocaleString()}`;
+        document.getElementById("subtotalLabel").innerText = formattedTotal;
+        document.getElementById("totalLabel").innerText = formattedTotal;
+        document.getElementById("btnTotalLabel").innerText = formattedTotal;
+      }
+
+      function triggerOrderSubmit() {
+        const form = document.getElementById("checkoutForm");
+        if (form.checkValidity()) {
+          form.requestSubmit();
+        } else {
+          form.reportValidity();
+        }
+      }
+
+      async function handlePlaceOrder(event) {
+        event.preventDefault();
+
+        const activeEmail = localStorage.getItem("brewBuddyActiveUser") || "";
+        const selectedPayment = document.querySelector(
+          'input[name="paymentMethod"]:checked',
+        ).value;
+
+        const orderData = {
+          fullName: document.getElementById("fullName").value.trim(),
+          phone: document.getElementById("phoneNumber").value.trim(),
+          address: document.getElementById("streetAddress").value.trim(),
+          city: document.getElementById("city").value.trim(),
+          notes: document.getElementById("deliveryNotes").value.trim(),
+          paymentMethod: selectedPayment,
+          date: new Date().toISOString(),
+          email: activeEmail,
+        };
+
+        try {
+          const response = await fetch("/api/orders", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(orderData),
+          });
+
+          if (response.ok) {
+            localStorage.removeItem("brewBuddyCart");
+            alert(
+              `🎉 Order Placed Successfully!\n\nThank you ${orderData.fullName}. Your coffee will be roasted fresh and delivered soon.`,
+            );
+            window.location.href = "index.html";
+          } else {
+            alert("Failed to place order. Please try again.");
+          }
+        } catch (error) {
+          console.error("Order submission error:", error);
+          alert("A network error occurred. Please try again.");
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        loadCheckoutSummary();
+
+        // Auto-fill user profile data (name, phone, street address)
+        const activeProfile = localStorage.getItem(
+          "brewBuddyActiveUserProfile",
+        );
+        if (activeProfile) {
+          try {
+            const user = JSON.parse(activeProfile);
+            if (user.name)
+              document.getElementById("fullName").value = user.name;
+            if (user.phone)
+              document.getElementById("phoneNumber").value = user.phone;
+            if (user.address)
+              document.getElementById("streetAddress").value = user.address;
+          } catch (e) {
+            console.error("Profile auto-fill error", e);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

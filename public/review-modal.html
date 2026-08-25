@@ -1,0 +1,464 @@
+<style>
+  body {
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+      sans-serif;
+    background-color: #1e1e1e;
+    color: #2c2623;
+    scroll-behavior: smooth;
+    width: 66.66%;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    padding: 16px;
+    overflow-y: auto;
+  }
+
+  .modal-overlay.active {
+    display: flex;
+  }
+
+  /* Scales the modal cleanly without breaking fixed positioning or layout centering */
+  .modal-scale-wrapper {
+    transform: scale(1.25);
+    transform-origin: center center;
+  }
+
+  .modal-card {
+    background: #ffffff;
+    width: 440px;
+    max-width: 90vw;
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    font-family:
+      "Segoe UI",
+      system-ui,
+      -apple-system,
+      sans-serif;
+    color: #2c2623;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #f4eee7;
+    border: none;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+  }
+
+  .modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c2623;
+    margin-bottom: 16px;
+  }
+
+  .divider-dashed {
+    border: none;
+    border-top: 1px dashed #d1c9be;
+    margin: 20px 0;
+  }
+
+  .modal-group {
+    margin-bottom: 16px;
+  }
+
+  .modal-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2c2623;
+    margin-bottom: 6px;
+  }
+
+  .modal-input,
+  .modal-textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e2ddd5;
+    border-radius: 8px;
+    font-size: 12px;
+    background: #ffffff;
+    color: #2c2623;
+    outline: none;
+  }
+
+  .modal-input::placeholder,
+  .modal-textarea::placeholder {
+    color: #b0a99f;
+  }
+
+  .modal-input:focus,
+  .modal-textarea:focus {
+    border-color: #1d7a46;
+  }
+
+  .modal-textarea {
+    height: 75px;
+    resize: none;
+  }
+
+  .star-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+  }
+
+  .star-rating .star {
+    font-size: 18px;
+    color: #e0d8cd;
+    transition: color 0.15s ease;
+  }
+
+  .star-rating .star.active {
+    color: #f3a812;
+  }
+
+  .rating-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1d7a46;
+    margin-left: 8px;
+  }
+
+  .radio-row {
+    display: flex;
+    gap: 20px;
+    font-size: 12px;
+    color: #2c2623;
+  }
+
+  .radio-row label {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+
+  .radio-row input[type="radio"] {
+    accent-color: #1d7a46;
+    width: 14px;
+    height: 14px;
+  }
+
+  .form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .btn-submit-review {
+    width: 100%;
+    background-color: #1d7a46;
+    color: #ffffff;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .btn-submit-review:hover {
+    background-color: #155c34;
+  }
+</style>
+
+<div class="modal-overlay" id="reviewModal">
+  <div class="modal-scale-wrapper">
+    <div class="modal-card">
+      <button type="button" class="modal-close" onclick="closeReviewModal()">
+        ✕
+      </button>
+      <div class="modal-title">Write a Review</div>
+
+      <form id="reviewForm" onsubmit="submitReview(event)">
+        <div class="modal-group">
+          <label>Overall Rating</label>
+          <div class="star-rating" id="starRating">
+            <span class="star active" onclick="setRating(1)">★</span>
+            <span class="star active" onclick="setRating(2)">★</span>
+            <span class="star active" onclick="setRating(3)">★</span>
+            <span class="star active" onclick="setRating(4)">★</span>
+            <span class="star active" onclick="setRating(5)">★</span>
+            <span class="rating-label" id="ratingLabel">5/5 Excellent</span>
+          </div>
+        </div>
+
+        <div class="modal-group">
+          <label for="reviewTitle">Review Title</label>
+          <input
+            type="text"
+            id="reviewTitle"
+            class="modal-input"
+            placeholder="e.g., Best morning brew in Kathmandu!"
+            required
+          />
+        </div>
+
+        <div class="modal-group">
+          <label for="reviewText">Your Review</label>
+          <textarea
+            id="reviewText"
+            class="modal-textarea"
+            placeholder="How was the flavor profile, aroma, and roast quality?"
+            required
+          ></textarea>
+        </div>
+
+        <div class="modal-group">
+          <label>Would you recommend this brew?</label>
+          <div class="radio-row">
+            <label>
+              <input type="radio" name="recommend" value="yes" checked /> Yes
+            </label>
+            <label>
+              <input type="radio" name="recommend" value="no" /> No
+            </label>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="modal-group">
+            <label for="reviewerName">Name</label>
+            <input
+              type="text"
+              id="reviewerName"
+              class="modal-input"
+              placeholder="Your Name"
+              required
+            />
+          </div>
+          <div class="modal-group">
+            <label for="reviewerEmail">Email Address</label>
+            <input
+              type="email"
+              id="reviewerEmail"
+              class="modal-input"
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+        </div>
+
+        <hr class="divider-dashed" />
+
+        <button type="submit" class="btn-submit-review">Submit Review</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentRating = 5;
+
+  function setRating(rating) {
+    currentRating = rating;
+
+    const stars = document.querySelectorAll("#starRating .star");
+
+    stars.forEach((star, index) => {
+      if (index < rating) {
+        star.classList.add("active");
+      } else {
+        star.classList.remove("active");
+      }
+    });
+
+    const labels = {
+      1: "1/5 Poor",
+      2: "2/5 Fair",
+      3: "3/5 Good",
+      4: "4/5 Very Good",
+      5: "5/5 Excellent",
+    };
+
+    const ratingLabel = document.getElementById("ratingLabel");
+
+    if (ratingLabel) {
+      ratingLabel.innerText = labels[rating];
+    }
+  }
+
+  function openReviewModal() {
+    const container = document.getElementById("modalContainer");
+    const modal = document.getElementById("reviewModal");
+    if (container) container.style.display = "block";
+    if (modal) modal.style.display = "flex";
+  }
+
+  function closeReviewModal() {
+    const modal = document.getElementById("reviewModal");
+    const container = document.getElementById("modalContainer");
+
+    if (modal) {
+      modal.style.display = "none";
+    }
+    if (container) {
+      container.style.display = "none";
+    }
+  }
+
+  async function submitReview(event) {
+    event.preventDefault();
+
+    let productId = null;
+
+    if (typeof currentProduct !== "undefined" && currentProduct) {
+      productId = Number(currentProduct.id);
+    }
+
+    if (!productId) {
+      const params = new URLSearchParams(window.location.search);
+      const idFromUrl = params.get("id");
+      if (idFromUrl) {
+        productId = Number(idFromUrl);
+      }
+    }
+
+    if (!productId) {
+      alert(
+        "Product information is not loaded. Please refresh the page and try again.",
+      );
+      return;
+    }
+
+    const recommendInput = document.querySelector(
+      'input[name="recommend"]:checked',
+    );
+
+    if (!recommendInput) {
+      alert("Please select whether you recommend this product.");
+      return;
+    }
+
+    const reviewData = {
+      productId: productId,
+      rating: Number(currentRating || 5),
+      title: document.getElementById("reviewTitle").value.trim(),
+      text: document.getElementById("reviewText").value.trim(),
+      recommend: recommendInput.value,
+      name: document.getElementById("reviewerName").value.trim(),
+      email: document.getElementById("reviewerEmail").value.trim(),
+      verified: true,
+      date: new Date().toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+    };
+
+    if (!reviewData.title) {
+      alert("Please enter a review title.");
+      return;
+    }
+    if (!reviewData.text) {
+      alert("Please enter your review text.");
+      return;
+    }
+    if (!reviewData.name) {
+      alert("Please enter your name.");
+      return;
+    }
+    if (!reviewData.email) {
+      alert("Please enter your email address.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/reviews", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reviewData),
+      });
+
+      const responseText = await response.text();
+
+      if (!response.ok) {
+        throw new Error(
+          "Server error " + response.status + ": " + responseText,
+        );
+      }
+
+      let result;
+      try {
+        result = JSON.parse(responseText);
+      } catch (error) {
+        throw new Error("Server returned invalid JSON: " + responseText);
+      }
+
+      if (result.status !== "success") {
+        throw new Error(result.message || "Review was not saved.");
+      }
+
+      if (typeof allReviewsMap !== "undefined" && allReviewsMap) {
+        if (!allReviewsMap[productId]) {
+          allReviewsMap[productId] = [];
+        }
+        allReviewsMap[productId].unshift(reviewData);
+
+        if (typeof currentProduct !== "undefined" && currentProduct) {
+          currentProduct.reviewCount = allReviewsMap[productId].length;
+        }
+
+        if (typeof renderProductDetails === "function") {
+          renderProductDetails(currentProduct || { id: productId });
+        }
+        if (typeof renderReviewsList === "function") {
+          renderReviewsList();
+        }
+      }
+
+      closeReviewModal();
+
+      const form = document.getElementById("reviewForm");
+      if (form) {
+        form.reset();
+      }
+
+      currentRating = 5;
+      setRating(5);
+
+      alert("✅ Review saved successfully!");
+    } catch (error) {
+      console.error("REVIEW SAVE ERROR:", error);
+      alert(
+        "❌ Failed to save review.\n\n" +
+          error.message +
+          "\n\nPress F12 → Console for details.",
+      );
+    }
+  }
+
+  setRating(5);
+</script>

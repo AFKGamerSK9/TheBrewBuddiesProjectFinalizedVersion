@@ -1,0 +1,1239 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Brew Buddies</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", system-ui, sans-serif;
+      }
+      html,
+      body {
+        background-color: #faf8f5;
+        color: #2c2623;
+        scroll-behavior: smooth;
+        width: 100%;
+        overflow-x: hidden;
+      }
+      /* Scale wrapper to 150% visually */
+      .page-wrapper {
+        transform: scale(1.5);
+        transform-origin: top center;
+        width: 66.66%;
+        margin: 0 auto;
+      }
+      .announcement-bar {
+        background-color: #111111;
+        color: #ffffff;
+        text-align: center;
+        padding: 8px;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+      }
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 48px;
+        background-color: #faf8f5;
+      }
+      .logo {
+        font-weight: 700;
+        font-size: 20px;
+        color: #1d7a46;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .logo img,
+      .footer-brand img {
+        height: 30px;
+        width: auto;
+      }
+      .footer-brand h3 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .search-bar input {
+        width: 380px;
+        padding: 10px 16px;
+        border-radius: 20px;
+        border: 1px solid #e2ddd5;
+        background-color: #f1ece4;
+        outline: none;
+      }
+      .nav-right {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+      .nav-link {
+        text-decoration: none;
+        color: #2c2623;
+        font-size: 14px;
+      }
+      .cart-icon {
+        text-decoration: none;
+        background-color: #1d7a46;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 16px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+      .category-pills {
+        display: flex;
+        gap: 12px;
+        padding: 0 48px 16px;
+        border-bottom: 1px solid #eae5dc;
+      }
+      .pill {
+        border: 1px solid #e2ddd5;
+        background: white;
+        padding: 8px 18px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+      .pill.active {
+        background-color: #1d7a46;
+        color: white;
+        border-color: #1d7a46;
+      }
+      .hero {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 48px;
+        gap: 32px;
+      }
+      .hero-sub {
+        font-size: 11px;
+        font-weight: 700;
+        color: #1d7a46;
+        letter-spacing: 1px;
+      }
+      .hero-content h1 {
+        font-size: 48px;
+        margin: 12px 0;
+        color: #2c2623;
+        line-height: 1.1;
+      }
+      .hero-content p {
+        color: #6e6862;
+        margin-bottom: 24px;
+      }
+      .hero-buttons {
+        display: flex;
+        gap: 12px;
+      }
+      .btn-primary {
+        background-color: #1d7a46;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .btn-secondary {
+        background-color: transparent;
+        border: 1px solid #2c2623;
+        padding: 12px 24px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .hero-image img {
+        width: 480px;
+        height: 280px;
+        object-fit: cover;
+        border-radius: 12px;
+      }
+      .store-container {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        gap: 32px;
+        padding: 0 48px 64px;
+      }
+      .sidebar h3 {
+        margin-bottom: 20px;
+      }
+      .filter-group {
+        margin-bottom: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        font-size: 14px;
+      }
+      .filter-title {
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      /* Dual Range Slider Custom Styling */
+      .dual-range-container {
+        position: relative;
+        height: 40px;
+        margin-top: 8px;
+      }
+      .dual-range-container input[type="range"] {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        top: 0;
+        background: none;
+        pointer-events: none;
+        -webkit-appearance: none;
+      }
+      .dual-range-container input[type="range"]::-webkit-slider-thumb {
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background: #1d7a46;
+        pointer-events: auto;
+        -webkit-appearance: none;
+        cursor: pointer;
+        position: relative;
+        z-index: 3;
+      }
+      .dual-range-container input[type="range"]::-moz-range-thumb {
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background: #1d7a46;
+        pointer-events: auto;
+        cursor: pointer;
+        border: none;
+        position: relative;
+        z-index: 3;
+      }
+      .slider-track {
+        position: absolute;
+        width: 100%;
+        height: 4px;
+        background: #e2ddd5;
+        top: 6px;
+        border-radius: 2px;
+        z-index: 1;
+      }
+
+      .price-inputs {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: #6e6862;
+        font-weight: 600;
+        margin-top: 4px;
+      }
+      .catalog-wrapper {
+        display: flex;
+        flex-direction: column;
+      }
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+      .product-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+      .img-wrapper img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+      }
+      .card-body {
+        padding: 16px;
+      }
+      .card-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      .tag {
+        background-color: #f1ece4;
+        font-size: 9px;
+        font-weight: 700;
+        padding: 4px 8px;
+        border-radius: 4px;
+        color: #1d7a46;
+      }
+      .rating {
+        font-size: 12px;
+        color: #e5a000;
+      }
+      .card-body h4 {
+        font-size: 16px;
+        margin-bottom: 12px;
+      }
+      .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .price {
+        font-weight: 700;
+        color: #2c2623;
+      }
+      .btn-add {
+        background-color: #1d7a46;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .page-btn {
+        background: #ffffff;
+        border: 1px solid #e2ddd5;
+        color: #2c2623;
+        padding: 8px 14px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .page-btn.active {
+        background-color: #1d7a46;
+        color: white;
+        border-color: #1d7a46;
+      }
+      .page-btn:hover:not(.active) {
+        background-color: #f1ece4;
+      }
+      .promise-section {
+        text-align: center;
+        padding: 64px 48px;
+        background-color: #f5f1ea;
+      }
+      .promise-sub {
+        font-size: 11px;
+        font-weight: 700;
+        color: #1d7a46;
+      }
+      .promise-section h2 {
+        margin: 8px 0 32px;
+      }
+      .promise-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+      .promise-card {
+        background: white;
+        padding: 24px;
+        border-radius: 12px;
+        text-align: left;
+      }
+      .promise-card .icon {
+        font-size: 24px;
+        margin-bottom: 12px;
+      }
+      .promise-card h4 {
+        margin-bottom: 8px;
+      }
+      .promise-card p {
+        font-size: 13px;
+        color: #6e6862;
+        line-height: 1.4;
+      }
+      footer {
+        background-color: #231b17;
+        color: #d3cdc6;
+        padding: 48px;
+      }
+      .footer-top {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 32px;
+      }
+      .footer-brand h3 {
+        color: white;
+        margin-bottom: 12px;
+      }
+      .footer-brand p {
+        max-width: 320px;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .footer-links {
+        display: flex;
+        gap: 48px;
+      }
+      .footer-links h5 {
+        color: white;
+        margin-bottom: 12px;
+      }
+      .footer-links a {
+        display: block;
+        font-size: 13px;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+      .footer-bottom {
+        border-top: 1px solid #382f2a;
+        padding-top: 24px;
+        font-size: 12px;
+      }
+
+      /* Instant Search Overlay Modal - Perfectly proportioned single-scale modal */
+      .instant-search-overlay {
+        transform: scale(1.5);
+        transform-origin: top center;
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(22, 18, 16, 0.65);
+        backdrop-filter: blur(4px);
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+      }
+
+      .instant-search-card {
+        background: #f4f0ea;
+        width: 720px;
+        max-width: 90vw;
+        border-radius: 20px;
+        padding: 32px;
+        max-height: 55vh;
+        margin-bottom: 325px;
+        overflow-y: auto;
+        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+        border: 1px solid #e2ddd5;
+      }
+
+      .instant-search-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .instant-search-header h2 {
+        font-size: 26px;
+        color: #2c2623;
+        font-family: serif;
+      }
+
+      .esc-btn {
+        background: #eae5dc;
+        border: 1px solid #dcd5cc;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #555;
+        cursor: pointer;
+      }
+
+      .instant-search-bar {
+        display: flex;
+        align-items: center;
+        background: #e9e4dc;
+        border: 1.5px solid #1d7a46;
+        border-radius: 24px;
+        padding: 12px 18px;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .instant-search-bar input {
+        border: none;
+        background: transparent;
+        width: 100%;
+        outline: none;
+        font-size: 15px;
+        color: #2c2623;
+      }
+
+      .quick-filters-section {
+        margin-bottom: 24px;
+      }
+
+      .quick-filters-title {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        color: #7a746e;
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .filter-pills-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .search-pill {
+        background: #ffffff;
+        border: 1px solid #1d7a46;
+        color: #1d7a46;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .search-pill.active {
+        background-color: #1d7a46;
+        color: #ffffff;
+      }
+
+      .matching-title {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        color: #7a746e;
+        display: block;
+        margin-bottom: 12px;
+      }
+
+      .search-product-card {
+        display: flex;
+        align-items: center;
+        background: #ffffff;
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: 1px solid #e2ddd5;
+        margin-bottom: 12px;
+        gap: 16px;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .search-product-card img {
+        width: 52px;
+        height: 52px;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+
+      .search-product-details {
+        flex: 1;
+      }
+
+      .search-meta-top {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 4px;
+      }
+
+      .search-tag {
+        background-color: #e3f2e9;
+        color: #1d7a46;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 4px;
+      }
+
+      .search-rating {
+        font-size: 12px;
+        color: #e5a000;
+      }
+
+      .review-count {
+        color: #8a847c;
+      }
+
+      .search-product-details h4 {
+        font-size: 14px;
+        color: #2c2623;
+      }
+
+      .search-product-pricing {
+        text-align: right;
+      }
+
+      .search-price {
+        display: block;
+        font-size: 14px;
+        font-weight: 700;
+        color: #2c2623;
+        margin-bottom: 2px;
+      }
+
+      .in-stock-label {
+        font-size: 10px;
+        font-weight: 700;
+        color: #1d7a46;
+        letter-spacing: 0.5px;
+      }
+    </style>
+    <link rel="icon" type="image/png" href="logo.png" />
+  </head>
+  <body>
+    <!-- Scaled Page Wrapper Container (150% Scale Context) -->
+    <div class="page-wrapper">
+      <!-- Top Announcement Bar -->
+      <div class="announcement-bar">
+        Flash Offers — Free shipping on orders over NRs. 2,500
+      </div>
+
+      <!-- Header -->
+      <header class="navbar">
+        <div class="nav-left">
+          <a href="index.html" style="text-decoration: none"
+            ><div class="logo">
+              <img src="logo.png" alt="The Brew Buddies Logo" />
+              <span>The Brew Buddies</span>
+            </div></a
+          >
+        </div>
+        <div class="search-bar">
+          <input
+            type="text"
+            placeholder="Search premium beans, loose teas..."
+          />
+        </div>
+        <div
+          class="nav-right"
+          id="navRightContainer"
+          style="display: flex; align-items: center; gap: 16px"
+        >
+          <!-- Dynamically populated based on authentication state -->
+        </div>
+      </header>
+
+      <!-- Category Pills -->
+      <nav class="category-pills">
+        <button class="pill active">Coffee</button>
+        <button class="pill">Loose Tea</button>
+        <button class="pill">Espresso Machines</button>
+        <button class="pill">Accessories</button>
+        <button class="pill">Best Sellers</button>
+      </nav>
+
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-content">
+          <span class="hero-sub">EXCEPTIONAL BEANS, ROASTED DAILY</span>
+          <h1>Discover Your Perfect Brew</h1>
+          <p>Bringing the Brew to You and Yours.</p>
+          <div class="hero-buttons">
+            <a
+              href="#productGrid"
+              class="btn-primary"
+              style="text-decoration: none; display: inline-block"
+              >Shop Now</a
+            >
+            <button class="btn-secondary" id="exploreCollectionsBtn">
+              Explore Collections
+            </button>
+          </div>
+        </div>
+        <div class="hero-image">
+          <img
+            src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80"
+            alt="Coffee Pour"
+          />
+        </div>
+      </section>
+
+      <!-- Store Section (Filters + Catalog) -->
+      <main class="store-container">
+        <!-- Sidebar Filters -->
+        <aside class="sidebar">
+          <h3>Filters</h3>
+
+          <div class="filter-group" id="categoryFilterGroup">
+            <label class="filter-title">Category</label>
+            <label
+              ><input type="checkbox" id="singleOriginCheckbox" /> Single Origin
+              Coffee</label
+            >
+            <label><input type="checkbox" /> Loose-Leaf Tea</label>
+            <label><input type="checkbox" /> Espresso Blends</label>
+            <label><input type="checkbox" /> Accessories</label>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-title">Price Range</label>
+            <div class="dual-range-container">
+              <div class="slider-track"></div>
+              <input
+                type="range"
+                id="minPriceSlider"
+                min="450"
+                max="3500"
+                value="450"
+                step="50"
+              />
+              <input
+                type="range"
+                id="maxPriceSlider"
+                min="450"
+                max="3500"
+                value="3500"
+                step="50"
+              />
+            </div>
+            <div class="price-inputs">
+              <span id="minPriceLabel">NRs. 450</span>
+              <span id="maxPriceLabel">NRs. 3,500</span>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Product Catalog & Pagination Wrapper -->
+        <div class="catalog-wrapper">
+          <section class="product-grid" id="productGrid">
+            <!-- Dynamic Products injected from JSON API -->
+          </section>
+
+          <!-- Pagination Controls Bar -->
+          <div
+            id="paginationContainer"
+            style="
+              display: flex;
+              justify-content: center;
+              gap: 8px;
+              margin-top: 40px;
+            "
+          >
+            <!-- Dynamically generated page buttons will appear here -->
+          </div>
+        </div>
+      </main>
+
+      <!-- Promise Banner -->
+      <section class="promise-section">
+        <span class="promise-sub">THE BREW BUDDIES PROMISE</span>
+        <h2>Sourced with Purpose, Crafted with Care</h2>
+        <div class="promise-grid">
+          <div class="promise-card">
+            <div class="icon">🌿</div>
+            <h4>Ethically Sourced</h4>
+            <p>
+              We purchase raw beans directly from smallholders at 25% above Fair
+              Trade minimums.
+            </p>
+          </div>
+          <div class="promise-card">
+            <div class="icon">🔥</div>
+            <h4>Roasted to Order</h4>
+            <p>
+              Every batch is roasted within 24 hours of dispatch to lock in
+              vibrant aromatic oils.
+            </p>
+          </div>
+          <div class="promise-card">
+            <div class="icon">🛡️</div>
+            <h4>Preserved Freshness</h4>
+            <p>
+              Our double-sealed foil bags with degas valves guarantee peak shelf
+              flavor longevity.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer>
+        <div class="footer-top">
+          <div class="footer-brand">
+            <h3>
+              <img src="logo.png" alt="The Brew Buddies Logo" /> The Brew
+              Buddies
+            </h3>
+            <p>
+              Artisanal coffee and fine loose-leaf teas sourced ethically from
+              family-owned estates around the globe. Freshly roasted, perfectly
+              dried, delivered directly to your cup.
+            </p>
+          </div>
+          <div class="footer-links">
+            <div>
+              <h5>Shop Collections</h5>
+              <a>Single Origin Coffee</a>
+              <a>Artisanal Blends</a> <a>Organic Loose Tea</a>
+              <a>Espresso Gear</a>
+            </div>
+            <div>
+              <h5>Our Heritage</h5>
+              <a>The Roastery Story</a>
+              <a>Sustainable Sourcing</a> <a>Brew Guides</a>
+            </div>
+            <div>
+              <h5>Support</h5>
+              <a>Shipping & Delivery</a>
+              <a>Returns & Refund Policy</a>
+              <a>Contact Roasting Team</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>
+            © 2026 The Brew Buddies Co. Sourced with integrity, packaged
+            beautifully.
+          </p>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Instant Search Overlay Modal (Placed OUTSIDE the transformed container) -->
+    <div id="instantSearchModal" class="instant-search-overlay">
+      <div class="instant-search-card">
+        <!-- Top Header -->
+        <div class="instant-search-header">
+          <h2>Instant Search</h2>
+          <button class="esc-btn" onclick="closeInstantSearch()">
+            ESC to Close
+          </button>
+        </div>
+
+        <!-- Search Input Bar -->
+        <div class="instant-search-bar">
+          <span class="search-icon">🔍</span>
+          <input
+            type="text"
+            id="instantSearchInput"
+            placeholder="Yirgacheffe"
+            autofocus
+          />
+        </div>
+
+        <!-- Quick Filters -->
+        <div class="quick-filters-section">
+          <span class="quick-filters-title">QUICK FILTERS</span>
+          <div class="filter-pills-row">
+            <button class="search-pill active">All</button>
+            <button class="search-pill">Single Origin</button>
+            <button class="search-pill">Dark Roast</button>
+            <button class="search-pill">Espresso</button>
+            <button class="search-pill">Loose Tea</button>
+          </div>
+        </div>
+
+        <!-- Matching Products List -->
+        <div class="matching-products-section">
+          <span class="matching-title" id="instantMatchingTitle"
+            >MATCHING PRODUCTS (0)</span
+          >
+          <div id="instantSearchResultsList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sign In Modal Fallback Element -->
+    <div id="signInModal" style="display: none"></div>
+
+    <script>
+      // Authentication State Management
+      async function updateAuthNav() {
+        const navRight = document.getElementById("navRightContainer");
+        if (!navRight) return;
+
+        const activeEmail = localStorage.getItem("brewBuddyActiveUser");
+
+        let currentUser = null;
+        if (activeEmail) {
+          currentUser = JSON.parse(
+            localStorage.getItem("brewBuddyActiveUserProfile"),
+          ) || { name: activeEmail.split("@")[0], isLoggedIn: true };
+        }
+
+        // Fetch user cart count dynamically
+        let cartCount = 0;
+        if (currentUser && currentUser.email) {
+          try {
+            const cartResponse = await fetch(
+              `/api/cart-count?email=${encodeURIComponent(currentUser.email)}`,
+            );
+            if (cartResponse.ok) {
+              const cartData = await cartResponse.json();
+              cartCount = cartData.count || 0;
+            }
+          } catch (err) {
+            console.error("Could not fetch cart count", err);
+          }
+        } else {
+          // Fallback to local storage cart if not logged in via server
+          const localCart =
+            JSON.parse(localStorage.getItem("brewBuddyCart")) || [];
+          cartCount = localCart.reduce((sum, item) => sum + item.quantity, 0);
+        }
+
+        if (activeEmail && currentUser) {
+          const firstName = currentUser.name
+            ? currentUser.name.split(" ")[0]
+            : activeEmail.split("@")[0];
+          navRight.innerHTML = `
+            <div style="position: relative;">
+              <button onclick="window.location.href='account.html'" class="nav-link" style="display: flex; align-items: center; gap: 8px; background: #1d7a46; color: white; padding: 6px 14px; border-radius: 20px; font-weight: 600; border: none; cursor: pointer;">
+                <span style="font-size: 11px; background: rgba(255,255,255,0.2); width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">👤</span>
+                <span>${firstName}</span>
+              </button>
+            </div>
+            <a href="/cart" class="cart-icon">🛒 <span class="cart-count">${cartCount}</span></a>
+          `;
+        } else {
+          navRight.innerHTML = `
+            <a href="account.html" class="nav-link" style="font-weight: 600; color: #1d7a46; text-decoration: none; padding: 6px 16px; border: 1.5px solid #1d7a46; border-radius: 20px;">Sign In</a>
+            <a href="/cart" class="cart-icon">🛒 <span class="cart-count">${cartCount}</span></a>
+          `;
+        }
+      }
+
+      function openModal(modalId) {
+        if (modalId === "signInModal") {
+          window.location.href = "account.html";
+        }
+      }
+
+      // Add to Cart Frontend Implementation
+      async function addToCart(product, sourcePage) {
+        const activeUser = JSON.parse(
+          localStorage.getItem("brewBuddyActiveUserProfile"),
+        );
+
+        if (!activeUser) {
+          alert("Please sign in to add items to your cart.");
+          openModal("signInModal");
+          return;
+        }
+
+        const cartPayload = {
+          account_id: activeUser.id || 1,
+          email: activeUser.email,
+          product_id: product.id,
+          product_name: product.name,
+          quantity: product.quantity || 1,
+          price: product.price,
+          added_from: sourcePage, // 'index.html' or 'product.html'
+        };
+
+        try {
+          const response = await fetch("/api/cart/add", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(cartPayload),
+          });
+
+          if (response.ok) {
+            alert("Item added to cart successfully!");
+            updateAuthNav();
+          } else {
+            alert("Failed to add item to cart.");
+          }
+        } catch (error) {
+          console.error("Error adding item to cart:", error);
+        }
+      }
+
+      let allProducts = [];
+      let filteredProducts = [];
+      let currentPage = 1;
+      const itemsPerPage = 9;
+
+      // Fetch API Products and Initialize Filters & Pagination
+      fetch("/data/products.json")
+        .then((res) => res.json())
+        .then((products) => {
+          allProducts = products;
+          applyFilters();
+        })
+        .catch((err) => console.error("Error parsing product JSON:", err));
+
+      // Handle Category Pills Click
+      document.querySelectorAll(".category-pills .pill").forEach((pill) => {
+        pill.addEventListener("click", (e) => {
+          document
+            .querySelectorAll(".category-pills .pill")
+            .forEach((p) => p.classList.remove("active"));
+          e.target.classList.add("active");
+          const activeCategoryPill = e.target.textContent.trim();
+
+          const sidebarCheckboxes = document.querySelectorAll(
+            "#categoryFilterGroup input[type='checkbox']",
+          );
+
+          sidebarCheckboxes.forEach((cb) => (cb.checked = false));
+
+          if (activeCategoryPill === "Coffee") {
+            sidebarCheckboxes[0].checked = true;
+            sidebarCheckboxes[2].checked = true;
+          } else if (activeCategoryPill === "Loose Tea") {
+            sidebarCheckboxes[1].checked = true;
+          } else if (
+            activeCategoryPill === "Accessories" ||
+            activeCategoryPill === "Espresso Machines"
+          ) {
+            sidebarCheckboxes[3].checked = true;
+          } else if (activeCategoryPill === "Best Sellers") {
+            sidebarCheckboxes.forEach((cb) => (cb.checked = true));
+          }
+
+          currentPage = 1;
+          applyFilters();
+        });
+      });
+
+      // Dual Range Slider Logic
+      const minSlider = document.getElementById("minPriceSlider");
+      const maxSlider = document.getElementById("maxPriceSlider");
+      const minLabel = document.getElementById("minPriceLabel");
+      const maxLabel = document.getElementById("maxPriceLabel");
+
+      function updateDualSlider() {
+        let minVal = parseInt(minSlider.value);
+        let maxVal = parseInt(maxSlider.value);
+
+        if (minVal > maxVal) {
+          const temp = minVal;
+          minSlider.value = maxVal;
+          maxSlider.value = temp;
+          minVal = parseInt(minSlider.value);
+          maxVal = parseInt(maxSlider.value);
+        }
+
+        minLabel.textContent = `NRs. ${minVal.toLocaleString()}`;
+        maxLabel.textContent = `NRs. ${maxVal.toLocaleString()}`;
+
+        currentPage = 1;
+        applyFilters();
+      }
+
+      minSlider.addEventListener("input", updateDualSlider);
+      maxSlider.addEventListener("input", updateDualSlider);
+
+      document
+        .querySelectorAll(".sidebar input[type='checkbox']")
+        .forEach((input) => {
+          input.addEventListener("change", () => {
+            currentPage = 1;
+            applyFilters();
+          });
+        });
+
+      function applyFilters() {
+        const categoryCheckboxes = document.querySelectorAll(
+          "#categoryFilterGroup input[type='checkbox']",
+        );
+
+        const selectedCategories = [];
+        if (categoryCheckboxes[0].checked) {
+          selectedCategories.push("Single Origin");
+          selectedCategories.push("Single Origin Coffee");
+        }
+        if (categoryCheckboxes[1].checked) {
+          selectedCategories.push("Loose Tea");
+          selectedCategories.push("Loose-Leaf Tea");
+        }
+        if (categoryCheckboxes[2].checked) {
+          selectedCategories.push("Espresso Blend");
+          selectedCategories.push("Espresso Blends");
+          selectedCategories.push("Artisanal Blend");
+        }
+        if (categoryCheckboxes[3].checked) {
+          selectedCategories.push("Accessories");
+        }
+
+        const minPrice = parseInt(minSlider.value);
+        const maxPrice = parseInt(maxSlider.value);
+
+        filteredProducts = allProducts.filter((p) => {
+          const productCategory = p.tag || p.category;
+          const matchesCategory =
+            selectedCategories.length === 0 ||
+            (productCategory &&
+              selectedCategories.some(
+                (cat) => productCategory.toLowerCase() === cat.toLowerCase(),
+              ));
+
+          const matchesPrice = p.price >= minPrice && p.price <= maxPrice;
+          return matchesCategory && matchesPrice;
+        });
+
+        renderPage(currentPage);
+      }
+
+      function renderPage(page) {
+        currentPage = page;
+        const startIndex = (page - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const paginatedItems = filteredProducts.slice(startIndex, endIndex);
+
+        const grid = document.getElementById("productGrid");
+
+        if (paginatedItems.length === 0) {
+          grid.innerHTML = `<p style="grid-column: span 3; text-align: center; padding: 40px; color: #6e6862;">No products match your filter criteria.</p>`;
+          document.getElementById("paginationContainer").innerHTML = "";
+          return;
+        }
+
+        grid.innerHTML = paginatedItems
+          .map(
+            (p) => `
+          <div class="product-card">
+            <a href="product.html?id=${p.id}" style="text-decoration: none; color: inherit; display: block;">
+              <div class="img-wrapper">
+                <img src="${p.image}" alt="${p.name}">
+              </div>
+              <div class="card-body">
+                <div class="card-meta">
+                  <span class="tag">${p.tag || p.category}</span>
+                  <span class="rating">★ ${p.rating} (${p.reviewCount})</span>
+                </div>
+                <h4>${p.name}</h4>
+              </div>
+            </a>
+            <div class="card-footer" style="padding: 0 16px 16px;">
+              <span class="price">NRs. ${p.price.toLocaleString()}</span>
+              <button class="btn-add" onclick='addToCart(${JSON.stringify(p)}, "index.html")'>🛒 Add to Cart</button>
+            </div>
+          </div>
+        `,
+          )
+          .join("");
+
+        renderPaginationControls();
+      }
+
+      function renderPaginationControls() {
+        const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+        const container = document.getElementById("paginationContainer");
+
+        if (totalPages <= 1) {
+          container.innerHTML = "";
+          return;
+        }
+
+        let buttonsHTML = "";
+        for (let i = 1; i <= totalPages; i++) {
+          buttonsHTML += `<button class="page-btn ${i === currentPage ? "active" : ""}" onclick="renderPage(${i})">${i}</button>`;
+        }
+        container.innerHTML = buttonsHTML;
+      }
+
+      function openInstantSearch() {
+        const modal = document.getElementById("instantSearchModal");
+        if (modal) {
+          modal.style.display = "flex";
+          document.getElementById("instantSearchInput").focus();
+          filterInstantSearch("");
+        }
+      }
+
+      function closeInstantSearch() {
+        const modal = document.getElementById("instantSearchModal");
+        if (modal) modal.style.display = "none";
+      }
+
+      function filterInstantSearch(query, tagFilter = "") {
+        const listContainer = document.getElementById(
+          "instantSearchResultsList",
+        );
+        const lowerQuery = query.toLowerCase();
+
+        const matched = allProducts.filter((p) => {
+          const pTag = p.tag || p.category || "";
+          const matchesText =
+            p.name.toLowerCase().includes(lowerQuery) ||
+            pTag.toLowerCase().includes(lowerQuery) ||
+            (p.description && p.description.toLowerCase().includes(lowerQuery));
+          const matchesTag =
+            tagFilter === "" || pTag.toLowerCase() === tagFilter.toLowerCase();
+          return matchesText && matchesTag;
+        });
+
+        document.getElementById("instantMatchingTitle").innerText =
+          `MATCHING PRODUCTS (${matched.length})`;
+
+        if (matched.length === 0) {
+          listContainer.innerHTML = `<p style="padding: 20px; text-align: center; color: #7a746e; font-size: 13px;">No matching products found.</p>`;
+          return;
+        }
+
+        listContainer.innerHTML = matched
+          .map(
+            (p) => `
+            <a href="product.html?id=${p.id}" class="search-product-card">
+              <img src="${p.image}" alt="${p.name}">
+              <div class="search-product-details">
+                <div class="search-meta-top">
+                  <span class="search-tag">${p.tag || p.category}</span>
+                  <span class="search-rating">★ ${p.rating} <span class="review-count">(${p.reviewCount})</span></span>
+                </div>
+                <h4>${p.name}</h4>
+              </div>
+              <div class="search-product-pricing">
+                <span class="search-price">NRs. ${p.price.toLocaleString()}</span>
+                <span class="in-stock-label">${p.stock > 0 ? "IN STOCK" : "OUT OF STOCK"}</span>
+              </div>
+            </a>
+          `,
+          )
+          .join("");
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        updateAuthNav();
+
+        const exploreBtn = document.getElementById("exploreCollectionsBtn");
+        if (exploreBtn) {
+          exploreBtn.addEventListener("click", () => {
+            const storeSection = document.querySelector(".store-container");
+            if (storeSection) {
+              storeSection.scrollIntoView({ behavior: "smooth" });
+            }
+          });
+        }
+
+        const searchInputBars = document.querySelectorAll(".search-bar input");
+        searchInputBars.forEach((input) => {
+          input.addEventListener("focus", (e) => {
+            e.preventDefault();
+            openInstantSearch();
+          });
+        });
+
+        const instantInput = document.getElementById("instantSearchInput");
+        if (instantInput) {
+          instantInput.addEventListener("input", (e) => {
+            filterInstantSearch(e.target.value);
+          });
+        }
+
+        const searchPills = document.querySelectorAll(".search-pill");
+        searchPills.forEach((pill) => {
+          pill.addEventListener("click", (e) => {
+            searchPills.forEach((p) => p.classList.remove("active"));
+            e.target.classList.add("active");
+            const pillText = e.target.textContent.trim();
+            const tagVal = pillText === "All" ? "" : pillText;
+            const currentQuery =
+              document.getElementById("instantSearchInput").value;
+            filterInstantSearch(currentQuery, tagVal);
+          });
+        });
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeInstantSearch();
+        }
+      });
+    </script>
+  </body>
+</html>

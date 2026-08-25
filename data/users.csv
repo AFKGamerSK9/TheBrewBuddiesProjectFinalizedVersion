@@ -1,0 +1,7 @@
+"id","name","email","phone","address","password","avatarInitials","membershipTier","points","pointsValue","subscription"
+"1","Ojash Shrestha","ojash@brewbuddies.com","+977 9845485299","Jhamsikhel, Lalitpur","ojash123","OS","Silver Beans Member",350,"NRs. 350","Active (Next bag ships Jan 26)"
+"2","Janit Saru","janit@brewbuddies.com","+977 9800000000","Thamel, Kathmandu","janit123","JS","New Bean Member",50,"NRs. 50","No active subscription"
+"3","Dipika Dahal","dipika@brewbuddies.com","+977 9800000001","Lakeside, Pokhara","dipika123","DD","New Bean Member",50,"NRs. 50","No active subscription"
+"4","Pooja Banjade","pooja@brewbuddies.com","+977 9800000002","Baneshwor, Kathmandu","pooja123","PB","New Bean Member",50,"NRs. 50","No active subscription"
+"5","Soham Sharma","soham@brewbuddies.com","+977 9800000003","Patan, Lalitpur","soham123","SS","New Bean Member",50,"NRs. 50","No active subscription"
+"6","Mohit Shahi","mohit@brewbuddies.com","+977 9800000004","Lazimpat, Kathmandu","mohit123","MS","New Bean Member",50,"NRs. 50","No active subscription"

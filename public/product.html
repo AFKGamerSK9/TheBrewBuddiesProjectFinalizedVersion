@@ -1,0 +1,1895 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title id="pageTitle">Product Detail — The Brew Buddies</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family:
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          sans-serif;
+      }
+      body {
+        background-color: #faf8f5;
+        color: #2c2623;
+        scroll-behavior: smooth;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      #app-wrapper {
+        transform: scale(1.5);
+        transform-origin: top center;
+        width: 100%;
+        margin: 0;
+        background-color: #faf8f5;
+      }
+
+      .announcement-bar {
+        background-color: #111111;
+        color: #ffffff;
+        text-align: center;
+        padding: 8px;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+      }
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 48px;
+        background-color: #faf8f5;
+        border-bottom: 1px solid #eae5dc;
+      }
+      .logo {
+        font-weight: 700;
+        font-size: 20px;
+        color: #1d7a46;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .logo img,
+      .footer-brand img {
+        height: 30px;
+        width: auto;
+      }
+      .search-bar input {
+        width: 380px;
+        padding: 10px 16px;
+        border-radius: 20px;
+        border: 1px solid #e2ddd5;
+        background-color: #f1ece4;
+        outline: none;
+        font-size: 13px;
+      }
+      .nav-right {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+      .nav-link {
+        text-decoration: none;
+        color: #2c2623;
+        font-size: 14px;
+      }
+      .user-badge-link {
+        text-decoration: none;
+        background-color: #1d7a46;
+        color: white;
+        padding: 6px 14px;
+        border-radius: 16px;
+        font-size: 13px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .signin-pill-btn {
+        text-decoration: none;
+        background-color: transparent;
+        color: #1d7a46;
+        border: 1px solid #1d7a46;
+        padding: 6px 18px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          background-color 0.2s ease,
+          color 0.2s ease;
+      }
+      .signin-pill-btn:hover {
+        background-color: #1d7a46;
+        color: #ffffff;
+      }
+
+      .cart-icon {
+        text-decoration: none;
+        background-color: #1d7a46;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 16px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .breadcrumb {
+        padding: 16px 48px;
+        font-size: 13px;
+        color: #6e6862;
+      }
+      .breadcrumb a {
+        color: #6e6862;
+        text-decoration: none;
+      }
+      .p-detail-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        padding: 0 48px 64px;
+      }
+      .gallery-main img {
+        width: 100%;
+        height: 480px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 16px;
+      }
+      .gallery-thumbs {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+      }
+      .gallery-thumbs img {
+        width: 100%;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+        cursor: pointer;
+        border: 2px solid transparent;
+      }
+      .gallery-thumbs img.active {
+        border-color: #1d7a46;
+      }
+
+      .p-info .badge-tag {
+        background-color: #e3f2e9;
+        color: #1d7a46;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 4px 8px;
+        border-radius: 4px;
+      }
+      .p-info .rating-inline {
+        float: right;
+        font-size: 13px;
+        color: #e5a000;
+      }
+      .p-info h1 {
+        font-size: 32px;
+        margin: 12px 0 8px;
+      }
+      .p-info .price-tag {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 16px;
+      }
+      .p-info .description {
+        font-size: 14px;
+        color: #6e6862;
+        line-height: 1.6;
+        margin-bottom: 24px;
+      }
+
+      .option-group {
+        margin-bottom: 20px;
+      }
+      .option-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .weight-options {
+        display: flex;
+        gap: 12px;
+      }
+      .btn-weight {
+        padding: 10px 20px;
+        border: 1px solid #e2ddd5;
+        background: white;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 13px;
+      }
+      .btn-weight.active {
+        background-color: #2c2623;
+        color: white;
+        border-color: #2c2623;
+      }
+      .select-dropdown {
+        width: 100%;
+        padding: 12px;
+        border-radius: 6px;
+        border: 1px solid #e2ddd5;
+        background: white;
+        font-size: 14px;
+        outline: none;
+      }
+
+      .purchase-options {
+        border: 1px solid #e2ddd5;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 24px;
+        background-color: #ffffff;
+      }
+      .purchase-option-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      .purchase-option-row.selected {
+        border: 1px solid #1d7a46;
+        background-color: #f0f9f4;
+      }
+      .purchase-option-row input[type="radio"] {
+        margin-top: 4px;
+        accent-color: #1d7a46;
+      }
+      .sub-details {
+        margin-left: 28px;
+        margin-top: 12px;
+      }
+      .sub-details select {
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: 1px solid #e2ddd5;
+        background: white;
+        font-size: 13px;
+      }
+
+      .cta-row {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+      .qty-picker {
+        display: flex;
+        align-items: center;
+        border: 1px solid #e2ddd5;
+        border-radius: 6px;
+        background: white;
+      }
+      .qty-picker button {
+        border: none;
+        background: none;
+        padding: 12px 16px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .qty-picker span {
+        padding: 0 12px;
+        font-weight: 600;
+      }
+      .btn-add-cart-large {
+        flex: 1;
+        background-color: #1d7a46;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+      }
+
+      .action-links {
+        display: flex;
+        gap: 24px;
+        font-size: 13px;
+        color: #6e6862;
+      }
+      .action-links a {
+        color: #6e6862;
+        text-decoration: none;
+      }
+
+      .tabs-section {
+        padding: 0 48px 64px;
+      }
+      .tab-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #eae5dc;
+        margin-bottom: 32px;
+      }
+      .tab-left {
+        display: flex;
+        gap: 32px;
+      }
+      .tab-btn {
+        background: none;
+        border: none;
+        padding-bottom: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #6e6862;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+      }
+      .tab-btn.active {
+        color: #2c2623;
+        border-bottom-color: #1d7a46;
+      }
+      .btn-open-review {
+        background-color: #1d7a46;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .story-col h3 {
+        font-size: 20px;
+        margin-bottom: 16px;
+      }
+      .story-col p {
+        font-size: 14px;
+        color: #6e6862;
+        line-height: 1.7;
+        margin-bottom: 16px;
+      }
+
+      .review-summary-card {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        align-items: center;
+        background: white;
+        border: 1px solid #e2ddd5;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+      }
+      .rating-overview {
+        text-align: center;
+      }
+      .rating-score {
+        font-size: 48px;
+        font-weight: 800;
+        color: #2c2623;
+      }
+      .rating-overview .stars {
+        color: #e5a000;
+        margin: 4px 0;
+      }
+      .rating-badge {
+        display: block;
+        color: #1d7a46;
+        font-weight: 700;
+        font-size: 13px;
+      }
+      .rating-overview small {
+        color: #8a847c;
+        font-size: 11px;
+      }
+      .bar-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 12px;
+        margin-bottom: 6px;
+      }
+      .bar-row span {
+        width: 45px;
+      }
+      .progress-bar {
+        flex: 1;
+        height: 8px;
+        background: #eae5dc;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .progress-bar .fill {
+        height: 100%;
+        background: #1d7a46;
+      }
+      .summary-cta {
+        text-align: center;
+        border-left: 1px solid #eae5dc;
+        padding-left: 20px;
+      }
+      .summary-cta p {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .review-card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #e2ddd5;
+        margin-bottom: 16px;
+      }
+      .review-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+      .user-avatar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .avatar-icon {
+        width: 32px;
+        height: 32px;
+        background: #eae5dc;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+      }
+      .verified-tag {
+        font-size: 11px;
+        color: #1d7a46;
+        font-weight: 700;
+      }
+      .review-date {
+        font-size: 11px;
+        color: #8a847c;
+        font-weight: normal;
+        margin-left: 8px;
+      }
+
+      #modalContainer {
+        display: none;
+      }
+
+      .instant-search-overlay {
+        transform: scale(1.5);
+        transform-origin: top center;
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(22, 18, 16, 0.65);
+        backdrop-filter: blur(4px);
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+      }
+
+      .instant-search-card {
+        background: #f4f0ea;
+        width: 720px;
+        max-width: 90vw;
+        border-radius: 20px;
+        padding: 32px;
+        max-height: 55vh;
+        margin-bottom: 325px;
+        overflow-y: auto;
+        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+        border: 1px solid #e2ddd5;
+      }
+
+      .instant-search-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .instant-search-header h2 {
+        font-size: 26px;
+        color: #2c2623;
+        font-family: serif;
+      }
+
+      .esc-btn {
+        background: #eae5dc;
+        border: 1px solid #dcd5cc;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #555;
+        cursor: pointer;
+      }
+
+      .instant-search-bar {
+        display: flex;
+        align-items: center;
+        background-color: #eae6de;
+        border: 1px solid #2d6a4f;
+        border-radius: 30px;
+        padding: 10px 20px;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .instant-search-bar .search-icon {
+        font-size: 16px;
+      }
+
+      .instant-search-bar input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        outline: none;
+        font-size: 15px;
+        color: #2c2623;
+      }
+
+      .quick-filters-section {
+        margin-bottom: 24px;
+      }
+
+      .quick-filters-title {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        color: #7a746e;
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .filter-pills-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .search-pill {
+        background: #ffffff;
+        border: 1px solid #1d7a46;
+        color: #1d7a46;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .search-pill.active {
+        background-color: #1d7a46;
+        color: #ffffff;
+      }
+
+      .matching-title {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        color: #7a746e;
+        display: block;
+        margin-bottom: 12px;
+      }
+
+      .search-product-card {
+        display: flex;
+        align-items: center;
+        background: #ffffff;
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: 1px solid #e2ddd5;
+        margin-bottom: 12px;
+        gap: 16px;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .search-product-card img {
+        width: 52px;
+        height: 52px;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+
+      .search-product-details {
+        flex: 1;
+      }
+
+      .search-meta-top {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 4px;
+      }
+
+      .search-tag {
+        background-color: #e3f2e9;
+        color: #1d7a46;
+        font-size: 9px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+
+      .search-rating {
+        font-size: 11px;
+        color: #e5a000;
+      }
+
+      .review-count {
+        color: #8a847c;
+      }
+
+      .search-product-details h4 {
+        font-size: 14px;
+        color: #2c2623;
+      }
+
+      .search-product-pricing {
+        text-align: right;
+      }
+
+      .search-price {
+        display: block;
+        font-size: 14px;
+        font-weight: 700;
+        color: #2c2623;
+        margin-bottom: 2px;
+      }
+
+      .in-stock-label {
+        font-size: 9px;
+        font-weight: 700;
+        color: #1d7a46;
+        letter-spacing: 0.5px;
+      }
+
+      footer {
+        background-color: #231b17;
+        color: #d3cdc6;
+        padding: 48px;
+      }
+      .footer-top {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 32px;
+      }
+      .footer-brand h3 {
+        color: white;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .footer-brand p {
+        max-width: 320px;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .footer-links {
+        display: flex;
+        gap: 48px;
+      }
+      .footer-links h5 {
+        color: white;
+        margin-bottom: 12px;
+      }
+      .footer-links a {
+        display: block;
+        font-size: 13px;
+        margin-bottom: 8px;
+        color: #d3cdc6;
+        text-decoration: none;
+      }
+      .footer-bottom {
+        border-top: 1px solid #382f2a;
+        padding-top: 24px;
+        font-size: 12px;
+      }
+    </style>
+    <link rel="icon" type="image/png" href="logo.png" />
+  </head>
+  <body>
+    <div id="app-wrapper">
+      <div class="announcement-bar">
+        Flash Offers — Free shipping on orders over NRs. 2,500
+      </div>
+
+      <header class="navbar">
+        <div class="nav-left">
+          <a href="/" style="text-decoration: none">
+            <div class="logo">
+              <img src="logo.png" alt="The Brew Buddies Logo" />
+              <span>The Brew Buddies</span>
+            </div>
+          </a>
+        </div>
+        <div class="search-bar">
+          <input
+            type="text"
+            id="headerSearchInput"
+            placeholder="Search premium beans, loose teas..."
+          />
+        </div>
+        <div
+          class="nav-right"
+          id="navRightContainer"
+          style="display: flex; align-items: center; gap: 16px"
+        >
+          <!-- Dynamically populated based on authentication state -->
+        </div>
+      </header>
+
+      <div class="breadcrumb">
+        <a href="/">Home</a> <span>/</span>
+        <a href="#" id="breadcrumbCategory">Coffee</a> <span>/</span>
+        <b id="breadcrumbProductName">Loading...</b>
+      </div>
+
+      <section class="p-detail-container">
+        <div class="gallery-col">
+          <div class="gallery-main">
+            <img id="mainImage" src="" alt="Product Image" />
+          </div>
+          <div class="gallery-thumbs" id="galleryThumbs"></div>
+        </div>
+
+        <div class="p-info">
+          <div>
+            <span class="badge-tag" id="productTag">LOADING...</span>
+            <span class="rating-inline" id="productRating">★★★★★ (0)</span>
+          </div>
+
+          <h1 id="productName">Loading Product...</h1>
+          <div class="price-tag" id="productPrice">NRs. 0</div>
+
+          <p class="description" id="productDescription">
+            Please wait while we load the product details...
+          </p>
+
+          <div class="option-group" id="weightOptionGroup">
+            <label>Select Weight</label>
+            <div class="weight-options">
+              <button
+                class="btn-weight active"
+                data-multiplier="1"
+                onclick="selectWeight(this, 1)"
+              >
+                250g
+              </button>
+              <button
+                class="btn-weight"
+                data-multiplier="1.8"
+                onclick="selectWeight(this, 1.8)"
+              >
+                500g
+              </button>
+              <button
+                class="btn-weight"
+                data-multiplier="3.3"
+                onclick="selectWeight(this, 3.3)"
+              >
+                1kg
+              </button>
+            </div>
+          </div>
+
+          <div class="option-group" id="grindOptionGroup">
+            <label>Select Grind</label>
+            <select
+              class="select-dropdown"
+              id="grindSelect"
+              onchange="updateDynamicPrices()"
+            >
+              <option value="0">Whole Bean (Recommended)</option>
+              <option value="50">
+                Coarse (French Press / Cold Brew) [+NRs. 50]
+              </option>
+              <option value="75">Medium (Drip / Pour Over) [+NRs. 75]</option>
+              <option value="100">Fine (Espresso) [+NRs. 100]</option>
+            </select>
+          </div>
+
+          <div class="purchase-options" id="purchaseOptionsCard">
+            <label class="purchase-option-row">
+              <input type="radio" name="purchase_type" value="once" />
+              <div><strong id="oneTimeText">One-time Purchase</strong></div>
+            </label>
+
+            <label class="purchase-option-row selected">
+              <input type="radio" name="purchase_type" value="sub" checked />
+              <div>
+                <strong id="subText">Subscribe & Save (10% Off)</strong>
+                <div class="sub-details">
+                  <span>Deliver every: </span>
+                  <select>
+                    <option>2 Weeks</option>
+                    <option>4 Weeks</option>
+                  </select>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="cta-row">
+            <div class="qty-picker">
+              <button onclick="updateQty(-1)">-</button>
+              <span id="qty">1</span>
+              <button onclick="updateQty(1)">+</button>
+            </div>
+            <button
+              class="btn-add-cart-large"
+              id="addToCartBtn"
+              onclick="handleAddToCart()"
+            >
+              🛒 Add to Cart — NRs. 0
+            </button>
+          </div>
+
+          <div class="action-links">
+            <a
+              href="#"
+              id="wishlistLink"
+              onclick="
+                handleWishlistToggle(
+                  this,
+                  1,
+                  currentProduct ? currentProduct.id : 1,
+                )
+              "
+              >♡ Add to Wishlist</a
+            >
+            <a href="#">🔗 Share Origin</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="tabs-section">
+        <div class="tab-header">
+          <div class="tab-left">
+            <button
+              class="tab-btn active"
+              onclick="switchTab(this, 'specsTab')"
+            >
+              Origin Story & Specs
+            </button>
+            <button
+              class="tab-btn"
+              id="reviewsTabBtn"
+              onclick="switchTab(this, 'reviewsTab')"
+            >
+              Reviews (0)
+            </button>
+          </div>
+        </div>
+
+        <div id="specsTab" class="tab-panel">
+          <div class="story-col">
+            <h3>A Heritage of High Altitudes</h3>
+            <p id="specParagraph1">
+              Our selected items come from certified family-owned partners and
+              estate origins. Grown at optimal elevations, these beans and
+              components produce rich and complex profiles.
+            </p>
+            <p id="specParagraph2">
+              Every harvest is carefully hand-sorted and quality-checked to
+              preserve the authentic aroma and distinct flavor characteristics
+              that define our collection.
+            </p>
+          </div>
+        </div>
+
+        <div id="reviewsTab" class="tab-panel" style="display: none">
+          <div class="review-summary-card">
+            <div class="rating-overview">
+              <span class="rating-score" id="summaryScore">0.0</span>
+              <div class="stars">★★★★★</div>
+              <span class="rating-badge">Excellent Average</span>
+              <small id="summaryCount">Based on 0 Verified Ratings</small>
+            </div>
+
+            <div class="rating-bars" id="ratingBarsContainer">
+              <div class="bar-row">
+                <span>5 Stars</span>
+                <div class="progress-bar">
+                  <div class="fill" id="fill-5" style="width: 0%"></div>
+                </div>
+                <span id="pct-5">0%</span>
+              </div>
+              <div class="bar-row">
+                <span>4 Stars</span>
+                <div class="progress-bar">
+                  <div class="fill" id="fill-4" style="width: 0%"></div>
+                </div>
+                <span id="pct-4">0%</span>
+              </div>
+              <div class="bar-row">
+                <span>3 Stars</span>
+                <div class="progress-bar">
+                  <div class="fill" id="fill-3" style="width: 0%"></div>
+                </div>
+                <span id="pct-3">0%</span>
+              </div>
+              <div class="bar-row">
+                <span>2 Stars</span>
+                <div class="progress-bar">
+                  <div class="fill" id="fill-2" style="width: 0%"></div>
+                </div>
+                <span id="pct-2">0%</span>
+              </div>
+              <div class="bar-row">
+                <span>1 Star</span>
+                <div class="progress-bar">
+                  <div class="fill" id="fill-1" style="width: 0%"></div>
+                </div>
+                <span id="pct-1">0%</span>
+              </div>
+            </div>
+
+            <div class="summary-cta">
+              <p>Bought this brew?</p>
+              <button class="btn-open-review" onclick="openReviewModal()">
+                Write a Review
+              </button>
+            </div>
+          </div>
+
+          <div class="reviews-col"></div>
+        </div>
+      </section>
+
+      <footer>
+        <div class="footer-top">
+          <div class="footer-brand">
+            <h3>
+              <img src="logo.png" alt="The Brew Buddies Logo" /> The Brew
+              Buddies
+            </h3>
+            <p>
+              Artisanal coffee and fine loose-leaf teas sourced ethically from
+              family-owned estates around the globe. Freshly roasted, perfectly
+              dried, delivered directly to your cup.
+            </p>
+          </div>
+          <div class="footer-links">
+            <div>
+              <h5>Shop Collections</h5>
+              <a>Single Origin Coffee</a><a>Artisanal Blends</a
+              ><a>Organic Loose Tea</a>
+            </div>
+            <div>
+              <h5>Our Heritage</h5>
+              <a>The Roastery Story</a><a>Sustainable Sourcing</a
+              ><a>Brew Guides</a>
+            </div>
+            <div>
+              <h5>Support</h5>
+              <a>Shipping & Delivery</a><a>Returns Policy</a><a>Contact Us</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>
+            © 2026 The Brew Buddies Co. Sourced with integrity, packaged
+            beautifully.
+          </p>
+        </div>
+      </footer>
+    </div>
+
+    <div id="modalContainer"></div>
+
+    <div id="instantSearchModal" class="instant-search-overlay">
+      <div class="instant-search-card">
+        <div class="instant-search-header">
+          <h2>Instant Search</h2>
+          <button class="esc-btn" onclick="closeInstantSearch()">
+            ESC to Close
+          </button>
+        </div>
+
+        <div class="instant-search-bar">
+          <span class="search-icon">🔍</span>
+          <input
+            type="text"
+            id="instantSearchInput"
+            placeholder="Type to search products..."
+            autofocus
+          />
+        </div>
+
+        <div class="quick-filters-section">
+          <span class="quick-filters-title">QUICK FILTERS</span>
+          <div class="filter-pills-row">
+            <button
+              class="search-pill active"
+              onclick="filterSearchTag('All', this)"
+            >
+              All
+            </button>
+            <button
+              class="search-pill"
+              onclick="filterSearchTag('Single Origin', this)"
+            >
+              Single Origin
+            </button>
+            <button
+              class="search-pill"
+              onclick="filterSearchTag('Espresso Blend', this)"
+            >
+              Espresso Blend
+            </button>
+            <button
+              class="search-pill"
+              onclick="filterSearchTag('Artisanal Blend', this)"
+            >
+              Artisanal Blend
+            </button>
+            <button
+              class="search-pill"
+              onclick="filterSearchTag('Loose Tea', this)"
+            >
+              Loose Tea
+            </button>
+            <button
+              class="search-pill"
+              onclick="filterSearchTag('Accessories', this)"
+            >
+              Accessories
+            </button>
+          </div>
+        </div>
+
+        <div class="matching-products-section">
+          <span class="matching-title" id="matchingTitle"
+            >MATCHING PRODUCTS (0)</span
+          >
+          <div id="instantSearchResultsList"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let allProducts = [];
+      let allReviewsMap = {};
+      let currentProduct = null;
+      let currentQty = 1;
+      let currentMultiplier = 1;
+      let selectedRating = 5;
+      let displayedReviewCount = 10;
+
+      // Authentication State Management
+      async function updateAuthNav() {
+        const navRight = document.getElementById("navRightContainer");
+        if (!navRight) return;
+
+        const activeEmail = localStorage.getItem("brewBuddyActiveUser");
+
+        let currentUser = null;
+        if (activeEmail) {
+          currentUser = JSON.parse(
+            localStorage.getItem("brewBuddyActiveUserProfile"),
+          ) || { name: activeEmail.split("@")[0], isLoggedIn: true };
+        }
+
+        if (activeEmail && currentUser) {
+          const firstName = currentUser.name
+            ? currentUser.name.split(" ")[0]
+            : activeEmail.split("@")[0];
+          navRight.innerHTML = `
+            <div style="position: relative;">
+              <button onclick="window.location.href='account.html'" class="nav-link" style="display: flex; align-items: center; gap: 8px; background: #1d7a46; color: white; padding: 6px 14px; border-radius: 20px; font-weight: 600; border: none; cursor: pointer;">
+                <span style="font-size: 11px; background: rgba(255,255,255,0.2); width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">👤</span>
+                <span>${firstName}</span>
+              </button>
+            </div>
+            <a href="/cart" class="cart-icon">🛒 <span class="cart-count">0</span></a>
+          `;
+        } else {
+          navRight.innerHTML = `
+            <a href="account.html" class="nav-link" style="font-weight: 600; color: #1d7a46; text-decoration: none; padding: 6px 16px; border: 1.5px solid #1d7a46; border-radius: 20px;">Sign In</a>
+            <a href="/cart" class="cart-icon">🛒 <span class="cart-count">0</span></a>
+          `;
+        }
+        updateCartCountUI();
+      }
+
+      async function addToCart(product, sourcePage) {
+        let activeUser = JSON.parse(
+          localStorage.getItem("brewBuddyActiveUserProfile"),
+        );
+        const activeEmail = localStorage.getItem("brewBuddyActiveUser");
+
+        if (!activeUser && activeEmail) {
+          activeUser = {
+            id: 1,
+            email: activeEmail,
+            name: activeEmail.split("@")[0],
+          };
+        }
+
+        if (!activeUser && !activeEmail) {
+          alert("Please sign in to add items to your cart.");
+          window.location.href = "account.html";
+          return;
+        }
+
+        const cartPayload = {
+          account_id: activeUser.id || 1,
+          email: activeUser.email || activeEmail,
+          product_id: product.id,
+          product_name: product.name,
+          quantity: product.quantity || 1,
+          price: product.price,
+          added_from: sourcePage,
+        };
+
+        try {
+          const response = await fetch("/api/cart/add", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(cartPayload),
+          });
+
+          if (response.ok) {
+            alert("Item added to cart successfully!");
+            updateCartCountUI();
+          } else {
+            throw new Error("Server responded with an error.");
+          }
+        } catch (error) {
+          console.warn(
+            "Backend API unavailable, falling back to local storage cart.",
+            error,
+          );
+
+          let localCart =
+            JSON.parse(localStorage.getItem("brewBuddyCart")) || [];
+          const existingIndex = localCart.findIndex(
+            (item) => item.id === product.id,
+          );
+
+          if (existingIndex > -1) {
+            localCart[existingIndex].quantity += product.quantity;
+          } else {
+            localCart.push(product);
+          }
+
+          localStorage.setItem("brewBuddyCart", JSON.stringify(localCart));
+          alert("Item added to cart successfully!");
+          updateCartCountUI();
+        }
+      }
+
+      async function updateCartCountUI() {
+        const activeEmail = localStorage.getItem("brewBuddyActiveUser");
+        let totalCount = 0;
+
+        if (activeEmail) {
+          try {
+            const response = await fetch(
+              `/api/cart-count?email=${encodeURIComponent(activeEmail)}`,
+            );
+            if (response.ok) {
+              const data = await response.json();
+              totalCount = data.count || 0;
+            }
+          } catch (err) {
+            console.warn(
+              "Could not fetch cart count from API, using local storage fallback.",
+              err,
+            );
+          }
+        }
+
+        if (totalCount === 0) {
+          const localCart =
+            JSON.parse(localStorage.getItem("brewBuddyCart")) || [];
+          totalCount = localCart.reduce((sum, item) => sum + item.quantity, 0);
+        }
+
+        document.querySelectorAll(".cart-count").forEach((el) => {
+          el.innerText = totalCount;
+        });
+      }
+
+      function handleAddToCart() {
+        if (!currentProduct) return;
+
+        const isAccessory =
+          currentProduct.tag.toLowerCase().includes("accessories") ||
+          currentProduct.tag.toLowerCase().includes("accessory");
+
+        let adjustedPrice = currentProduct.price;
+        if (!isAccessory) {
+          const grindSelect = document.getElementById("grindSelect");
+          const grindFee = grindSelect ? parseInt(grindSelect.value) || 0 : 0;
+          adjustedPrice =
+            Math.round(currentProduct.price * currentMultiplier) + grindFee;
+        }
+
+        const itemPayload = {
+          id: currentProduct.id,
+          name: currentProduct.name,
+          price: adjustedPrice,
+          quantity: currentQty,
+          image: currentProduct.image,
+        };
+        addToCart(itemPayload, "product.html");
+      }
+
+      async function checkWishlistStatus() {
+        if (!currentProduct) return;
+        let activeUser = JSON.parse(
+          localStorage.getItem("brewBuddyActiveUserProfile"),
+        );
+        const activeEmail = localStorage.getItem("brewBuddyActiveUser");
+        if (!activeUser && !activeEmail) return;
+
+        const accountId = activeUser ? activeUser.id : 1;
+
+        try {
+          const response = await fetch(
+            `/api/wishlist/check?account_id=${accountId}&product_id=${currentProduct.id}`,
+          );
+          if (response.ok) {
+            const data = await response.json();
+            const wishlistLink = document.getElementById("wishlistLink");
+            if (data.isWishlisted) {
+              wishlistLink.innerHTML = "Wishlisted";
+              wishlistLink.classList.add("wishlisted");
+              wishlistLink.style.fontWeight = "600";
+              wishlistLink.style.color = "#1d7a46";
+            } else {
+              wishlistLink.innerHTML = "♡ Add to Wishlist";
+              wishlistLink.classList.remove("wishlisted");
+            }
+          }
+        } catch (err) {
+          console.warn("Could not check wishlist status", err);
+        }
+      }
+
+      async function handleWishlistToggle(buttonElement, accountId, productId) {
+        event.preventDefault();
+        if (!currentProduct) return;
+
+        let activeUser = JSON.parse(
+          localStorage.getItem("brewBuddyActiveUserProfile"),
+        );
+        const activeEmail = localStorage.getItem("brewBuddyActiveUser");
+
+        if (!activeUser && activeEmail) {
+          activeUser = {
+            id: 1,
+            email: activeEmail,
+            name: activeEmail.split("@")[0],
+          };
+        }
+
+        if (!activeUser && !activeEmail) {
+          alert("Please sign in to manage your wishlist.");
+          window.location.href = "account.html";
+          return;
+        }
+
+        accountId = activeUser.id || accountId || 1;
+        productId = currentProduct ? currentProduct.id : productId;
+
+        const isWishlisted =
+          buttonElement.classList.contains("wishlisted") ||
+          buttonElement.textContent.trim().includes("Wishlisted");
+
+        const isAccessory =
+          currentProduct.tag.toLowerCase().includes("accessories") ||
+          currentProduct.tag.toLowerCase().includes("accessory");
+        let calcPrice = currentProduct.price;
+        if (!isAccessory) {
+          const grindSelect = document.getElementById("grindSelect");
+          const grindFee = grindSelect ? parseInt(grindSelect.value) || 0 : 0;
+          calcPrice =
+            Math.round(currentProduct.price * currentMultiplier) + grindFee;
+        }
+
+        if (isWishlisted) {
+          try {
+            const response = await fetch("/api/wishlist/remove", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                account_id: accountId,
+                product_id: productId,
+              }),
+            });
+            const data = await response.json();
+
+            if (data.status === "success" || response.ok) {
+              buttonElement.textContent = "♡ Add to Wishlist";
+              buttonElement.classList.remove("wishlisted");
+              buttonElement.style.color = "#6e6862";
+            } else {
+              console.error("Failed to remove from wishlist:", data.message);
+            }
+          } catch (error) {
+            let localWishlist =
+              JSON.parse(localStorage.getItem("brewBuddyWishlist")) || [];
+            localWishlist = localWishlist.filter(
+              (item) => item.id !== productId,
+            );
+            localStorage.setItem(
+              "brewBuddyWishlist",
+              JSON.stringify(localWishlist),
+            );
+            buttonElement.textContent = "♡ Add to Wishlist";
+            buttonElement.classList.remove("wishlisted");
+            buttonElement.style.color = "#6e6862";
+          }
+        } else {
+          const wishlistPayload = {
+            account_id: accountId,
+            email: activeUser.email || activeEmail,
+            product_id: productId,
+            product_name: currentProduct.name,
+            price: calcPrice,
+            image: currentProduct.image,
+          };
+
+          try {
+            const response = await fetch("/api/wishlist/add", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(wishlistPayload),
+            });
+            const data = await response.json();
+
+            if (data.status === "success" || response.ok) {
+              buttonElement.textContent = "Wishlisted";
+              buttonElement.classList.add("wishlisted");
+              buttonElement.style.fontWeight = "600";
+              buttonElement.style.color = "#1d7a46";
+            }
+          } catch (error) {
+            let localWishlist =
+              JSON.parse(localStorage.getItem("brewBuddyWishlist")) || [];
+            if (!localWishlist.some((item) => item.id === productId)) {
+              localWishlist.push(wishlistPayload);
+              localStorage.setItem(
+                "brewBuddyWishlist",
+                JSON.stringify(localWishlist),
+              );
+            }
+            buttonElement.textContent = "Wishlisted";
+            buttonElement.classList.add("wishlisted");
+            buttonElement.style.fontWeight = "600";
+            buttonElement.style.color = "#1d7a46";
+          }
+        }
+      }
+
+      function parseCSV(text) {
+        let lines = text.split("\n");
+        let result = [];
+        if (lines.length === 0) return result;
+
+        let headers = parseCSVLine(lines[0]);
+
+        for (let i = 1; i < lines.length; i++) {
+          if (!lines[i].trim()) continue;
+          let currentline = parseCSVLine(lines[i]);
+          let obj = {};
+          for (let j = 0; j < headers.length; j++) {
+            obj[headers[j]] =
+              currentline[j] !== undefined ? currentline[j] : "";
+          }
+          result.push({
+            productId: parseInt(obj.productId) || 1,
+            rating: parseInt(obj.rating) || 5,
+            title: obj.title || "",
+            text: obj.text || "",
+            recommend: obj.recommend || "yes",
+            name: obj.name || "Anonymous",
+            email: obj.email || "",
+            verified:
+              obj.verified === "True" ||
+              obj.verified === "true" ||
+              obj.verified === true,
+            date: obj.date || "",
+          });
+        }
+        return result;
+      }
+
+      function parseCSVLine(text) {
+        let ret = [];
+        let cur = "";
+        let inquotes = false;
+        for (let i = 0; i < text.length; i++) {
+          let c = text[i];
+          if (c === '"') {
+            inquotes = !inquotes;
+          } else if (c === "," && !inquotes) {
+            ret.push(cur.trim());
+            cur = "";
+          } else {
+            cur += c;
+          }
+        }
+        ret.push(cur.trim());
+        return ret.map((val) => val.replace(/^"|"$/g, ""));
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        updateAuthNav();
+
+        Promise.all([
+          fetch(`/data/products.json?v=${new Date().getTime()}`).then((res) =>
+            res.json(),
+          ),
+          fetch(`/data/reviews.csv?v=${new Date().getTime()}`)
+            .then((res) => res.text())
+            .then((csvText) => parseCSV(csvText))
+            .catch(() => []),
+        ])
+          .then(([productsData, reviewsList]) => {
+            allProducts = productsData;
+
+            allReviewsMap = {};
+            reviewsList.forEach((r) => {
+              if (!allReviewsMap[r.productId]) {
+                allReviewsMap[r.productId] = [];
+              }
+              allReviewsMap[r.productId].push(r);
+            });
+
+            const params = new URLSearchParams(window.location.search);
+            const productId = parseInt(params.get("id")) || 3;
+
+            currentProduct =
+              allProducts.find((p) => p.id === productId) || allProducts[0];
+
+            if (allReviewsMap[currentProduct.id]) {
+              currentProduct.reviewCount =
+                allReviewsMap[currentProduct.id].length;
+            }
+
+            renderProductDetails(currentProduct);
+            renderInstantSearchResults(allProducts);
+          })
+          .catch((err) => {
+            console.error("Error loading application data:", err);
+          });
+
+        fetch("/review-modal.html")
+          .then((res) => res.text())
+          .then((html) => {
+            document.getElementById("modalContainer").innerHTML = html;
+          });
+      });
+
+      function updateReviewSummary(productReviews) {
+        const totalReviews = productReviews.length;
+
+        if (totalReviews === 0) {
+          document.getElementById("summaryScore").innerText = "0.0";
+          document.getElementById("summaryCount").innerText =
+            "Based on 0 Verified Ratings";
+          for (let i = 1; i <= 5; i++) {
+            document.getElementById(`fill-${i}`).style.width = "0%";
+            document.getElementById(`pct-${i}`).innerText = "0%";
+          }
+          return;
+        }
+
+        let sumRatings = 0;
+        const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+
+        productReviews.forEach((r) => {
+          sumRatings += r.rating;
+          if (counts[r.rating] !== undefined) {
+            counts[r.rating]++;
+          }
+        });
+
+        const averageScore = (sumRatings / totalReviews).toFixed(1);
+        document.getElementById("summaryScore").innerText = averageScore;
+        document.getElementById("summaryCount").innerText =
+          `Based on ${totalReviews} Verified Ratings`;
+
+        for (let i = 1; i <= 5; i++) {
+          const percentage = Math.round((counts[i] / totalReviews) * 100);
+          document.getElementById(`fill-${i}`).style.width = `${percentage}%`;
+          document.getElementById(`pct-${i}`).innerText = `${percentage}%`;
+        }
+      }
+
+      function updateDynamicPrices() {
+        if (!currentProduct) return;
+
+        const isAccessory =
+          currentProduct.tag.toLowerCase().includes("accessories") ||
+          currentProduct.tag.toLowerCase().includes("accessory");
+
+        if (isAccessory) {
+          document.getElementById("productPrice").innerText =
+            `NRs. ${currentProduct.price.toLocaleString()}`;
+          document.getElementById("addToCartBtn").innerText =
+            `🛒 Add to Cart — NRs. ${currentProduct.price.toLocaleString()}`;
+          return;
+        }
+
+        const grindSelect = document.getElementById("grindSelect");
+        const grindFee = grindSelect ? parseInt(grindSelect.value) || 0 : 0;
+
+        const basePrice =
+          Math.round(currentProduct.price * currentMultiplier) + grindFee;
+        const subPrice = Math.round(basePrice * 0.9);
+
+        document.getElementById("productPrice").innerText =
+          `NRs. ${basePrice.toLocaleString()}`;
+        document.getElementById("oneTimeText").innerText =
+          `One-time Purchase — NRs. ${basePrice.toLocaleString()}`;
+        document.getElementById("subText").innerText =
+          `Subscribe & Save (10% Off) — NRs. ${subPrice.toLocaleString()}`;
+        document.getElementById("addToCartBtn").innerText =
+          `🛒 Add to Cart — NRs. ${basePrice.toLocaleString()}`;
+      }
+
+      function renderProductDetails(prod) {
+        currentMultiplier = 1;
+        document.querySelectorAll(".btn-weight").forEach((btn, idx) => {
+          if (idx === 0) btn.classList.add("active");
+          else btn.classList.remove("active");
+        });
+
+        document.getElementById("pageTitle").innerText =
+          `${prod.name} — The Brew Buddies`;
+        document.getElementById("breadcrumbProductName").innerText = prod.name;
+        document.getElementById("breadcrumbCategory").innerText = prod.tag;
+        document.getElementById("productTag").innerText =
+          prod.tag.toUpperCase();
+        document.getElementById("productName").innerText = prod.name;
+        document.getElementById("productDescription").innerText =
+          prod.description;
+
+        document.getElementById("mainImage").src = prod.image;
+
+        // Check if item is an Accessory tag
+        const isAccessory =
+          prod.tag.toLowerCase().includes("accessories") ||
+          prod.tag.toLowerCase().includes("accessory");
+
+        const weightGroup = document.getElementById("weightOptionGroup");
+        const grindGroup = document.getElementById("grindOptionGroup");
+        const purchaseOptionsCard = document.getElementById(
+          "purchaseOptionsCard",
+        );
+
+        if (isAccessory) {
+          if (weightGroup) weightGroup.style.display = "none";
+          if (grindGroup) grindGroup.style.display = "none";
+          if (purchaseOptionsCard) purchaseOptionsCard.style.display = "none";
+        } else {
+          if (weightGroup) weightGroup.style.display = "block";
+          if (grindGroup) grindGroup.style.display = "block";
+          if (purchaseOptionsCard) purchaseOptionsCard.style.display = "block";
+        }
+
+        const thumbsContainer = document.getElementById("galleryThumbs");
+        thumbsContainer.innerHTML = `
+          <img class="active" src="${prod.image}" onclick="switchImage(this)" />
+          <img src="https://images.unsplash.com/photo-1587734195503-904fca47e0e9?auto=format&fit=crop&w=300&q=80" onclick="switchImage(this)" />
+          <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=300&q=80" onclick="switchImage(this)" />
+          <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=300&q=80" onclick="switchImage(this)" />
+          <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=300&q=80" onclick="switchImage(this)" />
+        `;
+
+        updateDynamicPrices();
+        checkWishlistStatus();
+
+        const productReviews = allReviewsMap[prod.id] || [];
+        prod.reviewCount = productReviews.length;
+
+        document.getElementById("productRating").innerText =
+          `★★★★★ (${prod.reviewCount})`;
+        document.getElementById("reviewsTabBtn").innerText =
+          `Reviews (${prod.reviewCount})`;
+
+        updateReviewSummary(productReviews);
+        renderReviewsList();
+      }
+
+      function renderReviewsList() {
+        const reviewsCol = document.querySelector(".reviews-col");
+        if (!reviewsCol || !currentProduct) return;
+
+        const productReviews = allReviewsMap[currentProduct.id] || [];
+        const chunk = productReviews.slice(0, displayedReviewCount);
+
+        if (productReviews.length === 0) {
+          reviewsCol.innerHTML = `<p style="padding: 16px; text-align: center; color: #6e6862; font-size: 13px;">No reviews yet. Be the first to write one!</p>`;
+          return;
+        }
+
+        let html = chunk
+          .map((r) => {
+            const initials = r.name
+              .split(" ")
+              .map((n) => n[0])
+              .join("")
+              .toUpperCase();
+            return `
+              <div class="review-card">
+                <div class="review-header">
+                  <div class="user-avatar">
+                    <div class="avatar-icon">${initials}</div>
+                    <div>
+                      ${r.name}
+                      ${r.verified ? '<span class="verified-tag">✔ Verified Buyer</span>' : ""}
+                    </div>
+                  </div>
+                  <div class="rating" style="color: #e5a000">
+                    ${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}
+                    <span class="review-date">${r.date}</span>
+                  </div>
+                </div>
+                ${r.title ? `<h4 style="font-size: 14px; margin-bottom: 4px; color: #2c2623;">${r.title}</h4>` : ""}
+                <p style="font-size: 13px; color: #6e6862; line-height: 1.5">
+                  ${r.text}
+                </p>
+              </div>
+            `;
+          })
+          .join("");
+
+        if (displayedReviewCount < productReviews.length) {
+          html += `
+            <div style="text-align: center; margin-top: 24px;">
+              <button onclick="loadMoreReviews()" style="background: white; border: 1px solid #1d7a46; color: #1d7a46; padding: 10px 24px; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 13px;">
+                Load More Reviews (${productReviews.length - displayedReviewCount} remaining)
+              </button>
+            </div>
+          `;
+        }
+
+        reviewsCol.innerHTML = html;
+      }
+
+      function loadMoreReviews() {
+        displayedReviewCount += 10;
+        renderReviewsList();
+      }
+
+      function switchImage(thumb) {
+        document
+          .querySelectorAll(".gallery-thumbs img")
+          .forEach((img) => img.classList.remove("active"));
+        thumb.classList.add("active");
+        document.getElementById("mainImage").src = thumb.src;
+      }
+
+      function selectWeight(btn, multiplier) {
+        document
+          .querySelectorAll(".btn-weight")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        currentMultiplier = multiplier;
+        updateDynamicPrices();
+      }
+
+      function updateQty(delta) {
+        currentQty = Math.max(1, currentQty + delta);
+        document.getElementById("qty").innerText = currentQty;
+      }
+
+      function switchTab(clickedBtn, tabId) {
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        clickedBtn.classList.add("active");
+
+        document
+          .querySelectorAll(".tab-panel")
+          .forEach((panel) => (panel.style.display = "none"));
+        const targetPanel = document.getElementById(tabId);
+        if (targetPanel) {
+          targetPanel.style.display = "block";
+        }
+      }
+
+      function setRating(rating) {
+        selectedRating = rating;
+        const stars = document.querySelectorAll("#starRating .star");
+        stars.forEach((star, index) => {
+          if (index < rating) {
+            star.classList.add("active");
+          } else {
+            star.classList.remove("active");
+          }
+        });
+
+        const labels = {
+          1: "1/5 Poor",
+          2: "2/5 Fair",
+          3: "3/5 Good",
+          4: "4/5 Very Good",
+          5: "5/5 Excellent",
+        };
+        const ratingLbl = document.getElementById("ratingLabel");
+        if (ratingLbl) ratingLbl.innerText = labels[rating];
+      }
+
+      function openReviewModal() {
+        const container = document.getElementById("modalContainer");
+        const modal = document.getElementById("reviewModal");
+        if (container) container.style.display = "block";
+        if (modal) modal.style.display = "flex";
+      }
+
+      function closeReviewModal() {
+        const container = document.getElementById("modalContainer");
+        const modal = document.getElementById("reviewModal");
+        if (modal) modal.style.display = "none";
+        if (container) container.style.display = "none";
+      }
+
+      function submitReview(event) {
+        event.preventDefault();
+        if (!currentProduct) return;
+
+        const reviewData = {
+          productId: currentProduct.id,
+          rating: selectedRating,
+          title: document.getElementById("reviewTitle").value,
+          text: document.getElementById("reviewText").value,
+          recommend: document.querySelector('input[name="recommend"]:checked')
+            .value,
+          name: document.getElementById("reviewerName").value,
+          email: document.getElementById("reviewerEmail").value,
+          verified: true,
+          date: new Date().toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          }),
+        };
+
+        fetch("/api/reviews", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(reviewData),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (!allReviewsMap[currentProduct.id]) {
+              allReviewsMap[currentProduct.id] = [];
+            }
+            allReviewsMap[currentProduct.id].unshift(reviewData);
+
+            renderProductDetails(currentProduct);
+            closeReviewModal();
+            document.getElementById("reviewForm").reset();
+            setRating(5);
+            alert("Thank you! Your review has been successfully submitted.");
+          })
+          .catch((err) => {
+            console.error("Error submitting review:", err);
+            alert("Failed to submit review.");
+          });
+      }
+
+      function openInstantSearch() {
+        const modal = document.getElementById("instantSearchModal");
+        if (modal) {
+          modal.style.display = "flex";
+          document.getElementById("instantSearchInput").focus();
+        }
+      }
+
+      function closeInstantSearch() {
+        const modal = document.getElementById("instantSearchModal");
+        if (modal) modal.style.display = "none";
+      }
+
+      function renderInstantSearchResults(productsToRender) {
+        const listContainer = document.getElementById(
+          "instantSearchResultsList",
+        );
+        document.getElementById("matchingTitle").innerText =
+          `MATCHING PRODUCTS (${productsToRender.length})`;
+
+        if (productsToRender.length === 0) {
+          listContainer.innerHTML = `<p style="padding: 20px; text-align: center; color: #7a746e; font-size: 13px;">No matching products found.</p>`;
+          return;
+        }
+
+        listContainer.innerHTML = productsToRender
+          .map(
+            (p) => `
+              <a href="product.html?id=${p.id}" class="search-product-card">
+                <img src="${p.image}" alt="${p.name}" />
+                <div class="search-product-details">
+                  <div class="search-meta-top">
+                    <span class="search-tag">${p.tag}</span>
+                    <span class="search-rating">★★★★★ <span class="review-count">(${p.reviewCount || 0})</span></span>
+                  </div>
+                  <h4>${p.name}</h4>
+                </div>
+                <div class="search-product-pricing">
+                  <span class="search-price">NRs. ${p.price.toLocaleString()}</span>
+                  <span class="in-stock-label">IN STOCK</span>
+                </div>
+              </a>
+            `,
+          )
+          .join("");
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const searchInput = document.getElementById("headerSearchInput");
+        if (searchInput) {
+          searchInput.addEventListener("focus", (e) => {
+            e.preventDefault();
+            openInstantSearch();
+          });
+        }
+
+        const instantInput = document.getElementById("instantSearchInput");
+        if (instantInput) {
+          instantInput.addEventListener("input", (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = allProducts.filter(
+              (p) =>
+                p.name.toLowerCase().includes(query) ||
+                p.tag.toLowerCase().includes(query) ||
+                p.description.toLowerCase().includes(query),
+            );
+            renderInstantSearchResults(filtered);
+          });
+        }
+      });
+
+      function filterSearchTag(tag, btn) {
+        document
+          .querySelectorAll(".search-pill")
+          .forEach((p) => p.classList.remove("active"));
+        btn.classList.add("active");
+
+        const filtered =
+          tag === "All"
+            ? allProducts
+            : allProducts.filter(
+                (p) => p.tag.toLowerCase() === tag.toLowerCase(),
+              );
+
+        renderInstantSearchResults(filtered);
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeInstantSearch();
+        }
+      });
+    </script>
+  </body>
+</html>
