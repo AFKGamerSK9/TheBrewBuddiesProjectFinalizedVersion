@@ -7,6 +7,11 @@
 #include <cctype>
 #include <mutex>
 #include <algorithm>
+#ifdef _WIN32
+#include <winsock2.h>
+#include <windows.h>
+#include <shellapi.h>
+#endif
 #include "httplib.h"
 
 using namespace std;
@@ -1524,77 +1529,77 @@ int main()
     });
     
     // ========================================================
-// GET ORDERS HISTORY API BY EMAIL
-// ========================================================
-svr.Get("/api/orders", [](const httplib::Request& req, httplib::Response& res)
-{
-    string userEmail = req.get_param_value("email");
-    if (userEmail.empty())
+    // GET ORDERS HISTORY API BY EMAIL
+    // ========================================================
+    svr.Get("/api/orders", [](const httplib::Request& req, httplib::Response& res)
     {
-        res.status = 400;
-        res.set_content("[]", "application/json");
-        return;
-    }
-
-    const string filepath = "data/orders.csv";
-    lock_guard<mutex> lock(csvMutex);
-    ifstream file(filepath);
-    if (!file.is_open())
-    {
-        res.set_content("[]", "application/json");
-        return;
-    }
-
-    string line;
-    getline(file, line); // Skip header
-
-    string jsonArray = "[";
-    bool first = true;
-
-    string targetEmail = userEmail;
-    transform(targetEmail.begin(), targetEmail.end(), targetEmail.begin(), ::tolower);
-
-    while (getline(file, line))
-    {
-        if (line.empty()) continue;
-        vector<string> fields = parseCsvLine(line);
-        if (fields.size() < 8) continue;
-
-        string fullName = unquoteField(fields[0]);
-        string phone = unquoteField(fields[1]);
-        string address = unquoteField(fields[2]);
-        string city = unquoteField(fields[3]);
-        string notes = unquoteField(fields[4]);
-        string paymentMethod = unquoteField(fields[5]);
-        string date = unquoteField(fields[6]);
-        string email = unquoteField(fields[7]);
-
-        string lowerEmail = email;
-        transform(lowerEmail.begin(), lowerEmail.end(), lowerEmail.begin(), ::tolower);
-
-        if (lowerEmail == targetEmail)
+        string userEmail = req.get_param_value("email");
+        if (userEmail.empty())
         {
-            if (!first) jsonArray += ",";
-            first = false;
-
-            jsonArray += "{";
-            jsonArray += "\"fullName\":\"" + fullName + "\",";
-            jsonArray += "\"phone\":\"" + phone + "\",";
-            jsonArray += "\"address\":\"" + address + "\",";
-            jsonArray += "\"city\":\"" + city + "\",";
-            jsonArray += "\"notes\":\"" + notes + "\",";
-            jsonArray += "\"paymentMethod\":\"" + paymentMethod + "\",";
-            jsonArray += "\"date\":\"" + date + "\",";
-            jsonArray += "\"email\":\"" + email + "\"";
-            jsonArray += "}";
+            res.status = 400;
+            res.set_content("[]", "application/json");
+            return;
         }
-    }
-    file.close();
 
-    jsonArray += "]";
-    res.status = 200;
-    res.set_content(jsonArray, "application/json");
-});
+        const string filepath = "data/orders.csv";
+        lock_guard<mutex> lock(csvMutex);
+        ifstream file(filepath);
+        if (!file.is_open())
+        {
+            res.set_content("[]", "application/json");
+            return;
+        }
+
+        string line;
+        getline(file, line); // Skip header
+
+        string jsonArray = "[";
+        bool first = true;
+
+        string targetEmail = userEmail;
+        transform(targetEmail.begin(), targetEmail.end(), targetEmail.begin(), ::tolower);
+
+        while (getline(file, line))
+        {
+            if (line.empty()) continue;
+            vector<string> fields = parseCsvLine(line);
+            if (fields.size() < 8) continue;
+
+            string fullName = unquoteField(fields[0]);
+            string phone = unquoteField(fields[1]);
+            string address = unquoteField(fields[2]);
+            string city = unquoteField(fields[3]);
+            string notes = unquoteField(fields[4]);
+            string paymentMethod = unquoteField(fields[5]);
+            string date = unquoteField(fields[6]);
+            string email = unquoteField(fields[7]);
+
+            string lowerEmail = email;
+            transform(lowerEmail.begin(), lowerEmail.end(), lowerEmail.begin(), ::tolower);
+
+            if (lowerEmail == targetEmail)
+            {
+                if (!first) jsonArray += ",";
+                first = false;
+
+                jsonArray += "{";
+                jsonArray += "\"fullName\":\"" + fullName + "\",";
+                jsonArray += "\"phone\":\"" + phone + "\",";
+                jsonArray += "\"address\":\"" + address + "\",";
+                jsonArray += "\"city\":\"" + city + "\",";
+                jsonArray += "\"notes\":\"" + notes + "\",";
+                jsonArray += "\"paymentMethod\":\"" + paymentMethod + "\",";
+                jsonArray += "\"date\":\"" + date + "\",";
+                jsonArray += "\"email\":\"" + email + "\"";
+                jsonArray += "}";
+            }
+        }
+        file.close();
+
+        jsonArray += "]";
+        res.status = 200;
+        res.set_content(jsonArray, "application/json");
+    });
 
     // ========================================================
     // POST SUPPORT QUERY API (SAVES FEEDBACK TO support.csv)
@@ -1669,6 +1674,12 @@ svr.Get("/api/orders", [](const httplib::Request& req, httplib::Response& res)
     cout << "Open: http://localhost:" << port << endl;
     cout << "========================================" << endl;
     cout << endl;
+
+#ifdef _WIN32
+    string launchUrl = "http://localhost:" + to_string(port);
+    ShellExecute(NULL, "open", launchUrl.c_str(), NULL, NULL, SW_SHOWNORMAL);
+#endif
+
     if (!svr.listen("0.0.0.0", port))
     {
         cerr << "[ERROR] Failed to start server" << endl;
@@ -1676,3 +1687,5 @@ svr.Get("/api/orders", [](const httplib::Request& req, httplib::Response& res)
     }
     return 0;
 }
+
+//g++ main.cpp -o main -lws2_32 ; .\main

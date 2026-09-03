@@ -1,0 +1,4 @@
+//Server host:
+g++ main.cpp -o main -lws2_32 ; .\main
+//Localtunnel host:
+npx localtunnel --port 8080 --subdomain thebrewbuddies

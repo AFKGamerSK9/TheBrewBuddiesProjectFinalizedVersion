@@ -520,7 +520,6 @@
       const contactRoastBtn = document.getElementById("contactRoastBtn");
       const staffListContainer = document.getElementById("staffListContainer");
 
-      // Toggle staff phone number list when Contact Roast Team is clicked
       contactRoastBtn.addEventListener("click", () => {
         staffListContainer.classList.toggle("active");
         contactRoastBtn.textContent = staffListContainer.classList.contains(
@@ -530,7 +529,6 @@
           : "Contact Roast Team";
       });
 
-      // Attach click events to topic cards to open the modal query form
       document.querySelectorAll(".interactive-trigger").forEach((element) => {
         element.addEventListener("click", (e) => {
           const topic =

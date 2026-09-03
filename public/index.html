@@ -839,7 +839,6 @@
     <div id="signInModal" style="display: none"></div>
 
     <script>
-      // Authentication State Management
       async function updateAuthNav() {
         const navRight = document.getElementById("navRightContainer");
         if (!navRight) return;
@@ -853,7 +852,6 @@
           ) || { name: activeEmail.split("@")[0], isLoggedIn: true };
         }
 
-        // Fetch user cart count dynamically
         let cartCount = 0;
         if (currentUser && currentUser.email) {
           try {
@@ -868,7 +866,6 @@
             console.error("Could not fetch cart count", err);
           }
         } else {
-          // Fallback to local storage cart if not logged in via server
           const localCart =
             JSON.parse(localStorage.getItem("brewBuddyCart")) || [];
           cartCount = localCart.reduce((sum, item) => sum + item.quantity, 0);
@@ -901,7 +898,6 @@
         }
       }
 
-      // Add to Cart Frontend Implementation
       async function addToCart(product, sourcePage) {
         const activeUser = JSON.parse(
           localStorage.getItem("brewBuddyActiveUserProfile"),
@@ -920,7 +916,7 @@
           product_name: product.name,
           quantity: product.quantity || 1,
           price: product.price,
-          added_from: sourcePage, // 'index.html' or 'product.html'
+          added_from: sourcePage, 
         };
 
         try {
@@ -946,7 +942,6 @@
       let currentPage = 1;
       const itemsPerPage = 9;
 
-      // Fetch API Products and Initialize Filters & Pagination
       fetch("/data/products.json")
         .then((res) => res.json())
         .then((products) => {
@@ -955,7 +950,6 @@
         })
         .catch((err) => console.error("Error parsing product JSON:", err));
 
-      // Handle Category Pills Click
       document.querySelectorAll(".category-pills .pill").forEach((pill) => {
         pill.addEventListener("click", (e) => {
           document
@@ -989,7 +983,6 @@
         });
       });
 
-      // Dual Range Slider Logic
       const minSlider = document.getElementById("minPriceSlider");
       const maxSlider = document.getElementById("maxPriceSlider");
       const minLabel = document.getElementById("minPriceLabel");

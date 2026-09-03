@@ -1319,7 +1319,6 @@
         }
 
         try {
-          // Fetch wishlist items and products list concurrently[cite: 7]
           const [wishlistRes, productsRes] = await Promise.all([
             fetch(`/api/wishlist?account_id=${activeUser.id}`),
             fetch("/products.json"),
@@ -1342,14 +1341,12 @@
 
           wishlistGrid.innerHTML = items
             .map((item) => {
-              // Find matching product by name from products.json[cite: 7]
               const matchedProduct = products.find(
                 (p) =>
                   p.name.trim().toLowerCase() ===
                   item.product_name.trim().toLowerCase(),
               );
 
-              // Fallback image if no match is found[cite: 7]
               const imgSrc =
                 matchedProduct && matchedProduct.image
                   ? matchedProduct.image

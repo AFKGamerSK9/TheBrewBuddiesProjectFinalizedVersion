@@ -1076,7 +1076,6 @@
       let selectedRating = 5;
       let displayedReviewCount = 10;
 
-      // Authentication State Management
       async function updateAuthNav() {
         const navRight = document.getElementById("navRightContainer");
         if (!navRight) return;
@@ -1571,7 +1570,6 @@
 
         document.getElementById("mainImage").src = prod.image;
 
-        // Check if item is an Accessory tag
         const isAccessory =
           prod.tag.toLowerCase().includes("accessories") ||
           prod.tag.toLowerCase().includes("accessory");
